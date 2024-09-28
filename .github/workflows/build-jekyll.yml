@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
       
       - name: Manually install npm dependencies
-        run: npm install
+        run: npm ci
       
       - name: Manually build css and js files
         run: npm run build
