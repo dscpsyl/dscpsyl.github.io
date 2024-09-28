@@ -23,6 +23,17 @@ jobs:
           # So we use the magic number 2147483647 here which means infinite depth for git fetch
           # See https://github.com/actions/checkout/issues/520, https://stackoverflow.com/a/6802238
           fetch-depth: 2147483647
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'npm'
+      
+      - name: Manually install npm dependencies
+        run: npm install
+      
+      - name: Manually build css and js files
+        run: npm run build
 
       # Use GitHub Actions' cache to cache dependencies on servers
       - uses: actions/cache@v4
@@ -37,7 +48,7 @@ jobs:
 
       # Use GitHub Deploy Action to build and deploy to Github
       # For latest version: `jeffreytse/jekyll-deploy-action@master`
-      - uses: jeffreytse/jekyll-deploy-action@v0.6.0
+      - uses: jeffreytse/jekyll-deploy-action@master
         with:
           provider: 'github'         # Default is github
           token: ${{ secrets.GITHUB_TOKEN }} # It's your Personal Access Token(PAT)
