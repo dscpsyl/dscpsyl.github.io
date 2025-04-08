@@ -1,9 +1,9 @@
 ---
-layout: list
+layout: research
 title: Research
 description: >
-  Some papers that others might think are interesting.
-hide_description: false
-sitemap: true
+  Some papers that I wrote and helped with.
 permalink: /research/
+show_collection: research
+no_groups: false
 ---

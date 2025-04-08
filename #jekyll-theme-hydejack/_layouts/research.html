@@ -1,0 +1,27 @@
+---
+# Adapted from the `research.html` and `list.html` layout in the Hydejack theme
+layout: page
+---
+
+{{ content }}
+
+{% assign show_collection = page.show_collection | default:"research" %}
+{% assign empty_col = '' | split:'.' %}
+{% assign ordered_research = site[show_collection] | default:empty_col | sort:"date" | reverse %}
+{% assign nsd = site.hydejack.no_structured_data | default:site.no_structured_data %}
+
+{% assign research_group_by = site.data.strings.date_formats.research_group_by | default:"%Y" %}
+
+{% assign prev_date = 0 %}
+{% if page.no_groups %}<ul class="related-posts">{% endif %}
+{% for paper in ordered_research %}
+  {% assign current_date = paper.date | date:research_group_by %}
+  {% unless page.no_groups %}{% if current_date != prev_date %}
+    {% unless forloop.first %}</ul>{% endunless %}
+    <h2 id="{{ research_group_by | slugify }}-{{ current_date | slugify }}" class="hr-bottom">{{ current_date }}</h2>
+    <ul class="related-posts">
+    {% assign prev_date = current_date %}
+  {% endif %}{% endunless %}
+  {% include_cached components/post-list-item.html post=paper format=list_entry %}
+  {% if forloop.last %}</ul>{% endif %}
+{% endfor %}
