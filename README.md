@@ -3,7 +3,9 @@
 ## You will Forget
 You will forget how this site works after a few days so here is something for future me to take a look at. You are using the [`Hydejack`](hydejack.com) theme for [`Jekyll`](https://jekyllrb.com/), pro version. The documentation for this theme is located in the `docs` folder of the repo. While not listed directly on the webpage, you can still access this via `/docs` on the website directly.
 
-All `.folder` folders in this repo are for development so they can be ignored in production.
+- All `.folder` folders in this repo are for development so they can be ignored in production. 
+- If you need to start adding external scripts, please take a look at `/docs/scripts/`.
+- If you need to add a new social medai icon, please take a look at `/docs/advanced/#adding-a-custom-social-media-icon` for more details.
 
 As a reference, frontmatter specification is located [here](https://jekyllrb.com/docs/frontmatter/).
 
@@ -49,6 +51,8 @@ tags: [example, content]
 
 The name of the file is in the format `YEAR-MONTH-DAY-title.MARKUP`.
 
+See `/docs/writing/` for specific details about writting for this theme.
+
 ## How to Add a Project
 Projects are made the same as *Posts*, but just under a different collection (under the `_projects` folder). An example front matter is shown below:
 
@@ -83,3 +87,5 @@ The name of the file can be whaever you want it to be, but it is recommended to 
 Research is added the same as *Projects*. There is a custom layout `research.html` that is added to the themepack for the main overview page. The only difference is that in the overview, they are presented as a list instead of the grid. In addition, all papers are put in the `_research` folder and `research` collection.
 
 ## How to Update the Resume
+
+The resume is defined under the `_data` folder in the `resume.yml` file. Edit and update as needed. You can see the details at `/docs/basics/#adding-a-resume`.
