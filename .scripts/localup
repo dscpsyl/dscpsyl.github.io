@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-bundle exec jekyll serve
+echo -e "Serving the site in local dev and debug mode...\n"
+jekyll serve --livereload --trace
