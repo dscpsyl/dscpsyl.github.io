@@ -3,7 +3,7 @@
 
 # Uncomment and set the URL of your site (with protocol, e.g. `https://`)
 # NOTE: You don't need to provide this property when hosting on GitHub Pages or Netlify.
-# url:                   https://username.github.io
+# url:                   https://www.printhello.world
 
 # Uncomment and set the "base URL" of your site.
 # When your site is in a subdirectory, set to `/<name of directory>`,
@@ -20,30 +20,32 @@
 lang:                  en
 
 # The title of your blog. Used in the sidebar and the browser tab.
-title:                 Hydejack
+title:                 David Jr Sim
 
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description:           >
-  Hydejack is a boutique Jekyll theme for hackers, nerds, and academics,
-  with a focus on personal sites that are meant to impress.
+  David Jr Sim is a computer scientist, researcher, and nerd based out of Los Angeles California.
 
 # A shorter description for the sidebar.
-tagline:               Change `tagline` in `_config.yml`
+tagline:               Automation, AI, and the aforementioned uprising.
 
 # A list of keywords for your blog
-keywords:              []
+keywords:              [David,David Jr,Sim,computer,scientist,researcher,automation,AI,artificial intelligence,machine learning,homebrew,server]
 
 # A (square) logo for your site.
 # If provided, it will be shown at the top of the sidebar.
 # It also used by the `jekyll-seo-tag` plugin.
-logo:                  /assets/img/logo.png
+logo:                  /assets/img/logo.svg
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:
   # Used by `jekyll-feed`:
-  name:                <firstname> <lastname>
-  email:               <mail@domain.tld>
+  name:                David Jr Sim
+  email:               dsim@cs.ucsb.edu
+  social:
+    github:            dscpsyl
+    linkedin:          davidjsim
   # # Used by `jekyll-seo-tag`:
   # twitter:             <username>
 
@@ -51,25 +53,24 @@ author:
 menu:
   - title:             Blog
     url:               /blog/
-  - title:             Projects
+  - title:             Showcase
     url:               /projects/
-  - title:             Résumé*
+  - title:             Research
+    url:               /research/
+  - title:             Résumé
     url:               /resume/
-  - title:             Documentation
-    url:               /docs/
+  #If I ever decide to add it: https://github.com/piazzai/cvless
+  # - title:             CV
+  #   url:               /cv/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
 legal:
-  - title:             LICENSE
-    url:               /LICENSE/
-  - title:             NOTICE
-    url:               /NOTICE/
-  - title:             CHANGELOG
-    url:               /CHANGELOG/
+  - title:             This site is published with Github Pages
+    url:               https://github.com/dscpsyl/dscpsyl.github.io
 
 # This text will appear in a `<small>` tag in the footer of every page.
-copyright:             © 2024. All rights reserved.
+copyright:             All rights reserved.
 
 # Format of the permalinks
 permalink:             /blog/:categories/:year-:month-:day-:title/
@@ -94,15 +95,15 @@ theme: jekyll-theme-hydejack
 # ----------------------------------------------------------------------------------------
  
 # Sidebar image and theme color of the site.
-accent_image:          /assets/img/sidebar-bg.jpg
-accent_color:          rgb(79,177,186)
+accent_image:          /assets/img/sidebar-bg.jpg #!Change
+accent_color:          rgb(168, 97, 255)  #hex(a861ff)
 
 # This is used for the `theme-color` meta tag,
 # which changes the background color of the browser UI in certain browsers.
 # Defaults to `accent_color`.
-theme_color:           rgb(25,55,71)
+theme_color:           rgb(8, 0, 18) #hex(080012)
 
-# IMPORTANT:
+# IMPORTANT: #! Look into font options
 # As of Hydejack 9.2, Google Fonts are turned off by default due to a stronger focus on privacy.
 # Hydejack will use the default font of your visitor's operating system instead.
 # If you want to match the look of hydejack.com, remove the following line and uncomment 
@@ -110,7 +111,7 @@ theme_color:           rgb(25,55,71)
 
 # The string encoding which fonts to fetch from Google Fonts.
 # See: <https://hydejack.com/docs/configuration/>
-# google_fonts:          Roboto+Slab:700|Noto+Sans:400,400i,700,700i
+google_fonts:          false
 
 # The text font. Expects a string that is a valid CSS font-family value.
 # To change font-weight, see _sass/variables.scss
@@ -142,13 +143,6 @@ defaults:
     values:
       sitemap:         false
 
-  # Don't include licenses in sitemap (feel free to delete)
-  - scope:
-      path:            licenses/
-    values:
-      layout:          plain
-      sitemap:         false
-
   # # You can use the following to enable comments on all posts.
   # - scope:
   #     type:            posts
@@ -173,7 +167,7 @@ defaults:
       seo:
         type:          WebPage
 
-kramdown:
+kramdown: #! Check for math version on gh pages
   math_engine:         katex
   math_engine_opts:    {}
   footnote_backlink:   '&#x21a9;&#xfe0e;'
@@ -185,10 +179,10 @@ kramdown:
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  post_addons:         [about, newsletter, related, random, comments]
+  post_addons:         [about, related, comments]
 
   # Configure the order of complementary content on project pages
-  project_addons:      [about, newsletter, other, comments]
+  project_addons:      [about, other, comments]
 
   # Set to `true` if you don't want to show an icon indicating external links
   no_mark_external:    false
@@ -289,16 +283,12 @@ hydejack:
 # ----------------------------------------------------------------------------------------
 
 collections:
-  featured_categories:
-    permalink:         /blog/:name/
-    output:            true
-
-  featured_tags:
-    permalink:         /tag-:name/
-    output:            true
-
   projects:
     permalink:         /projects/:path/
+    output:            true
+  
+  research:
+    permalink:         /research/:path/
     output:            true
 
 
@@ -404,13 +394,6 @@ sass:
 
 jekyll_compose:
   default_front_matter:
-    drafts:
-      layout: post
-      description: > 
-        A short ~160 character description of your post for search engines,
-        social media previews, etc.
-      image:
-        path: /assets/img/sidebar-bg.jpg
     posts:
       layout: post
       description: > 
