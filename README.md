@@ -23,6 +23,8 @@ permalink: /docs/
 
 Or, if you have a bunch of items for one page, you can add a folder to the root of the repo and add an `index.md` file to that folder. This will make all the pages have the folder name permalink.
 
+In addition, if you want, you can set the `permalink` frontmatter (as shown in the example) to fully control the URL.
+
 
 
 ## How to Add a Research Paper
