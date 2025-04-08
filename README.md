@@ -9,6 +9,8 @@ As a reference, frontmatter specification is located [here](https://jekyllrb.com
 
 ## How to Update the About Me Homepage
 
+The homepage is located in the `index.md` file in the root directory.
+
 ## How to Add a Page
 Take a look at the basics [here](https://jekyllrb.com/docs/pages/).
 
@@ -28,8 +30,6 @@ permalink: /docs/
 Or, if you have a bunch of items for one page, you can add a folder to the root of the repo and add an `index.md` file to that folder. This will make all the pages have the folder name permalink.
 
 In addition, if you want, you can set the `permalink` frontmatter (as shown in the example) to fully control the URL.
-
-## How to Add a Research Paper
 
 ## How to Add a Post
 Take a look at the basics [here](https://jekyllrb.com/docs/posts/).
@@ -78,6 +78,8 @@ sitemap: false
 
 The name of the file can be whaever you want it to be, but it is recommended to use the title of the project.
 
-## How to Update the Resume
+## How to Add a Research Paper
 
-## How to Update the CV
+Research is added the same as *Projects*. There is a custom layout `research.html` that is added to the themepack for the main overview page. The only difference is that in the overview, they are presented as a list instead of the grid. In addition, all papers are put in the `_research` folder and `research` collection.
+
+## How to Update the Resume
