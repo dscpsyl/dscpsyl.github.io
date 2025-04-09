@@ -179,10 +179,10 @@ kramdown:
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  post_addons:         [about, related, comments]
+  post_addons:         [related, comments]
 
   # Configure the order of complementary content on project pages
-  project_addons:      [about, other, comments]
+  project_addons:      [other, comments]
 
   # Set to `true` if you don't want to show an icon indicating external links
   no_mark_external:    false
