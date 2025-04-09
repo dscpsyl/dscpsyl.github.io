@@ -2,102 +2,148 @@
 # If you don't have a JSON Resume you can just edit this YAML file instead.
 # See also: <https://jsonresume.org/>.
 basics:
-  name: "Richard Hendricks"
-  label: "Programmer"
+  name: "David Jr Sim"
+  # label: ""
   picture: "https://via.placeholder.com/240x240"
-  email: ""
-  phone: "(912) 555-4321"
-  website: "https://piedpiper.com"
-  summary: >
-    Richard hails from Tulsa.
-    He has earned degrees from the University of Oklahoma and Stanford. (Go Sooners and Cardinals!)
-    Before starting Pied Piper, he worked for Hooli as a part time software developer.
-    While his work focuses on applied information theory,
-    mostly optimizing lossless compression schema of both the length-limited and adaptive variants,
-    his non-work interests range widely,
-    everything from quantum computing to chaos theory.
-    He could tell you about it, but THAT would NOT be a “length-limited” conversation!
-    Open `_data/resume.yml` to edit this text.
+  email: "dsim@cs.ucsb.edu"
+  # phone: ""
+  website: "https://www.printhello.world"
+  # summary: ""
   location:
-    address: "2712 Broadway St"
-    postalCode: "CA 94115"
-    city: "San Francisco"
+    # address: "2712 Broadway St"
+    # postalCode: "CA 94115"
+    city: "Los Angeles"
     countryCode: "US"
     region: "California"
   profiles:
-    - network: "Twitter"
-      username: "RHendricksCEO"
-      url: ""
+    - network: "Github"
+      username: "dscpsyl"
+      url: "https://github.com/dscpsyl"
     - network: "LinkedIn"
-      username: "Richard Hendricks"
-      url: ""
+      username: "davidjsim"
+      url: "https://www.linkedin.com/in/davidjsim/"
 work:
-  - company: "Pied Piper"
-    position: "CEO/President"
-    website: "https://piedpiper.com"
+  - company: "Associated Students of the University of California Santa Barbara"
+    position: "Student Technology Director"
+    website: "https://www.as.ucsb.edu/"
+    startDate: "2021-09-01"
+    endDate: "2025-06-01"
+    highlights:
+      - Develop 3 AI bots using naive bayes to double paperwork and communication efficiency while following campus technology policies.
+      - Negotiate with private vendors for API access to integrate applications for department usage in resource aggregation.
+      - Reduce confusion about proprietary app documentation by revamping the onboarding process, which decreased help tickets by 12%.
+      - Modernize websites for student-association interaction, generating 26% more site traffic and 43% more retention.
+      - Overhaul documentation of technology within the association for future staff employment and code improvements.
+    position: "Special Interim Machine Learning Researcher"
+    website: "https://www.ids.osaka-u.ac.jp/en/"
+    startDate: "2024-06-01"
+    endDate: "2024-08-01"
+    highlights:
+      - Utilized PyTorch, Trio3, and other modern software to develop a pipeline harnessing Unet, TeethSeg, and other medial machine learning networks.
+      - Organized and participated with cross-departmental teams to design and implement novel AI architecture in the clinical setting.
+      - Authored and co-authored a research paper detailing findings and results for publication in peer-reviewed journals and academic conferences.
+      - Conducted extensive literature reviews and synthesized research findings to develop novel deep learning approaches to medical image analysis.
+      - Contributed to a 40% increase in lab funding by driving key research advancements during tenure.
+  - company: "Isla Vista Tenants Union"
+    position: "Technology Director"
+    website: "https://ivtu.as.ucsb.edu/"
+    startDate: "2022-09-01"
+    endDate: "2023-09-01"
+    highlights:
+      - Constructed a personable chatbot for commonly asked questions using decision trees, reducing human intervention and casework load by 19%.
+      - Upgraded scheduling software using logistic regression to auto-reschedule tenants in between open slots, improving casework efficiency by 40%.
+      - Trained algorithms on classifying property management providers on ratemyivrental.com using sentimental analysis.
+      - Organized Agile development team to improve feature development times by 30% through ad hoc committees.
+      - Conformed the organization's website to WCAG 2 standards for better content delivery to student tenants and website visitors.
+  - company: "UCSB SexInfo Online"
+    position: "Lead Webmaster"
+    website: "https://sexinfoonline.com/"
     startDate: "2013-12-01"
-    endDate: ""
-    summary: >
-      Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has
-      consistently fielded high Weisman Scores™ that are not merely competitive,
-      but approach the theoretical limit of lossless compression.
+    endDate: "2022-12-01"
+    # summary: >
+    #   Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has
+    #   consistently fielded high Weisman Scores™ that are not merely competitive,
+    #   but approach the theoretical limit of lossless compression.
     highlights:
-      - "Built an algorithm for artist to detect if their music was violating copy right infringement laws"
-      - "Successfully won Techcrunch Disrupt"
-      - "Optimized an algorithm that holds the current world record for Weisman Scores"
-volunteer:
-  - organization: "CoderDojo"
-    position: "Teacher"
-    website: "https://coderdojo.com/"
-    startDate: "2012-01-01"
-    endDate: "2013-01-01"
-    summary: "Global movement of free coding clubs for young people."
-    highlights:
-      - "Awarded 'Teacher of the Month'"
-education:
-  - institution: "University of Oklahoma"
-    area: "Information Technology"
-    studyType: "Bachelor"
-    startDate: "2011-06-01"
-    endDate: "2014-01-01"
-    gpa: "4.0"
-    courses:
-      - "DB1101 - Basic SQL"
-      - "CS2011 - Java Introduction"
-awards:
-  - title: "Digital Compression Pioneer Award"
-    date: "2014-11-01"
-    awarder: "Techcrunch"
-    summary: "There is no spoon."
-publications:
-  - name: "Video compression for 3d media"
-    publisher: "Hooli"
-    releaseDate: "2014-10-01"
-    website: "https://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)"
-    summary: "Innovative middle-out compression algorithm that changes the way we store data."
+      - Led a web development team to monitor and refactor the company's website while allowing for backward compatibility with existing APIs.
+      - Calibrated website to satisfy university and WCAG 2 requirements.
+      - Implemented Redis caching and CDNs to improve load times by 23%.
+      - Formalized new member orientation to the codebase and simplified introduction period by 1 week.
+      - Maintained the internal WordPress plugin, ensuring bug fixes and a 99.999% uptime.
 skills:
-  - name: "Web Development"
-    level: "Master"
+  - name: "AI & ML"
     keywords:
-      - "HTML"
-      - "CSS"
-      - "Javascript"
-  - name: "Compression"
-    level: "Master"
+      - "Python"
+      - "PyTorch"
+      - "OpenCV2"
+  - name: "Fullstack"
     keywords:
-      - "Mpeg"
-      - "MP4"
-      - "GIF"
-languages:
-  - language: "English"
-    fluency: "Native speaker"
-interests:
-  - name: "Wildlife"
+      - "MySQL"
+      - "PostgreSQL"
+      - "MongoDB"
+      - "React"
+      - "Django"
+      - "S3"
+  - name: "SysAdmin"
     keywords:
-      - "Ferrets"
-      - "Unicorns"
-references:
-  - name: "Erlich Bachman"
-    reference: >
-      It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
-      Company proved that he will be a valuable addition to any company.
+      - "UNIX"
+      - "Nginx"
+      - "Bash"
+      - "Docker"
+      - "Cmdline"
+  - name: "Low Level"
+    keywords:
+      - "C++"
+      - "Rust"
+  - name: "Dev Tools"
+    keywords:
+      - "Git"
+      - "Agile"
+  # - name: "Web Development"
+  #   level: "Master"
+  #   keywords:
+  #     - "HTML"
+  #     - "CSS"
+  #     - "Javascript"
+education:
+  - institution: "University of California - Santa Barbara"
+    area: "Computer Science (B.S.) | Psychology & Brain Science (B.S.) | Statistical Science Minor"
+    studyType: "Bachelor of Science"
+    # startDate: "2011-06-01"
+    # endDate: "2014-01-01"
+    # courses:
+    #   - "DB1101 - Basic SQL"
+    #   - "CS2011 - Java Introduction"
+# awards:
+#   - title: "Digital Compression Pioneer Award"
+#     date: "2014-11-01"
+#     awarder: "Techcrunch"
+#     summary: "There is no spoon."
+# publications:
+#   - name: "Video compression for 3d media"
+#     publisher: "Hooli"
+#     releaseDate: "2014-10-01"
+#     website: "https://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)"
+#     summary: "Innovative middle-out compression algorithm that changes the way we store data."
+# volunteer:
+#   - organization: "CoderDojo"
+#     position: "Teacher"
+#     website: "https://coderdojo.com/"
+#     startDate: "2012-01-01"
+#     endDate: "2013-01-01"
+#     summary: "Global movement of free coding clubs for young people."
+#     highlights:
+#       - "Awarded 'Teacher of the Month'"
+# languages:
+#   - language: "English"
+#     fluency: "Native speaker"
+# interests:
+#   - name: "Wildlife"
+#     keywords:
+#       - "Ferrets"
+#       - "Unicorns"
+# references:
+#   - name: "Erlich Bachman"
+#     reference: >
+#       It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
+#       Company proved that he will be a valuable addition to any company.
