@@ -333,6 +333,7 @@ plugins:
   - jekyll_picture_tag
   - jekyll-pdf-embed
   - liquid_reading_time
+  - jekyll-spaceship
 
 
 # SEO Tag

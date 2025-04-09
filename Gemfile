@@ -56,6 +56,7 @@ group :jekyll_plugins do
   gem 'jekyll_picture_tag'
   gem "jekyll-pdf-embed"
   gem "liquid_reading_time"
+  gem 'jekyll-spaceship'
 
   # Non-Github Pages plugins:
   gem "jekyll-last-modified-at"

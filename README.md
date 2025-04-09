@@ -49,7 +49,7 @@ tags: [example, content]
 
 The name of the file is in the format `YEAR-MONTH-DAY-title.MARKUP`.
 
-See `/docs/writing/` for specific details about writting for this theme.
+See `/docs/writing/` for specific details about writting for this theme. We have also installed the [spaceship plugin](https://github.com/jeffreytse/jekyll-spaceship) for some extra features.
 
 > **Note**: We also have a way to natively embed *pdfs* and *ppts* into the site. See the [pdf plugin](https://github.com/MihajloNesic/jekyll-pdf-embed) for more details.
 
