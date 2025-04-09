@@ -14,6 +14,13 @@ links:
 
 # JGrade2
 
+
+1. [I (kinda) don't like Java](#i-kinda-dont-like-java)
+2. [Outdated-ness](#outdated-ness)
+3. [Enter jGrade2](#enter-jgrade2)
+4. [Conclusion](#conclusion)
+{: toc }
+
 ## I (kinda) don't like Java
 
 As a daily driver, I am not a fan of the Java language. It's verbose and clunky syntax is reminiscent of the old days where programming was more about creating the code-space than playing in it. As someone who starts a new project every other weak, Java's framework setup eats into those precious few days. However, I do think Java has its place. Its accessibility and standardization makes it a well-suited choice for large, legacy-focused systems. Its verbosity is a feature, not a bug- in some cases- and is excellent for "fine-grained control" over a system. Thus, while I discourage programmers from using Java, I heavily encourage [computer science students]({% post_url 2025-01-17-computer-sciencer-vs-programmer %}) to master it.
