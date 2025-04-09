@@ -80,6 +80,8 @@ theme_color: '#193747'
 sitemap: false
 ```
 
+> **Note**:  While the above is the native way for the theme to use images, you can also use the [picture plugin](https://rbuchberger.github.io/jekyll_picture_tag/) instead.
+
 The name of the file can be whaever you want it to be, but it is recommended to use the title of the project.
 
 ## How to Add a Research Paper
