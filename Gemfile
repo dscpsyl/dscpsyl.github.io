@@ -38,6 +38,9 @@ gem "duktape"
 # Required for `jekyll serve` in Ruby 3
 gem "webrick"
 
+# Required for `jekyll-spaceship`
+gem "ostruct"
+
 # Uncomment when using the `--lsi` option for `jekyll build`
 # gem "classifier-reborn"
 
