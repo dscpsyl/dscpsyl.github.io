@@ -6,10 +6,11 @@ djsim:
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
+  #! NOTE: Add pictures for each activity
   about:             |
     **I am the antagonist to the mundane, guided only by my curiosity.**
     
-    **I play instruments for passing the time blissfully.**
+    **I play the er-hu for passing the time blissfully.**
 
     **I started flying planes for a wager between friends.**
     
