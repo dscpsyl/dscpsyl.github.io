@@ -167,7 +167,7 @@ defaults:
       seo:
         type:          WebPage
 
-kramdown: #! Check for math version on gh pages
+kramdown:
   math_engine:         katex
   math_engine_opts:    {}
   footnote_backlink:   '&#x21a9;&#xfe0e;'
