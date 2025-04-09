@@ -331,6 +331,8 @@ plugins:
   - jekyll-include-cache
   - jekyll-last-modified-at
   - jekyll_picture_tag
+  - jekyll-pdf-embed
+  - liquid_reading_time
 
 
 # SEO Tag

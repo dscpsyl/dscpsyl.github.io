@@ -54,6 +54,8 @@ group :jekyll_plugins do
   gem "jekyll-titles-from-headings"
   gem "jekyll-include-cache"
   gem 'jekyll_picture_tag'
+  gem "jekyll-pdf-embed"
+  gem "liquid_reading_time"
 
   # Non-Github Pages plugins:
   gem "jekyll-last-modified-at"
