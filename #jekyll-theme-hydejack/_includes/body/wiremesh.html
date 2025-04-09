@@ -1,5 +1,3 @@
-{{ assign background_color = include.bkclr }}
-
 <canvas id="meshCanvas"></canvas>
 <style>
   #meshCanvas {
@@ -10,8 +8,8 @@
     height: 100vh;
     z-index: -1;
     pointer-events: none;
-    /* background-color: {{ background_color }}; */
-    background-color: #000;
+    background-color: {{ site.theme_color }};
+    /* background-color: #000; */
   }
 </style>
 <script>
@@ -109,13 +107,13 @@ function updatePoints() {
 
 // Attract points toward the mouse and slow down when leaving the influence area
 let mouse = { x: null, y: null };
-_canvas.addEventListener("mousemove", (event) => {
+window.addEventListener("mousemove", (event) => {
     mouse.x = event.clientX;
     mouse.y = event.clientY;
     lastMoveTime = Date.now(); // Reset the idle timer on mouse movement
 });
 
-_canvas.addEventListener("mouseleave", () => {
+window.addEventListener("mouseleave", () => {
     mouse.x = null;
     mouse.y = null;
 });
