@@ -1,6 +1,5 @@
 # The primary author of this blog.
 # Must be the same as `author` in `_config.yml`.
-# Change `author1` to your shortname.
 djsim:
   name:              David Jr Sim
   email:             dsim@cs.ucsb.edu
@@ -8,11 +7,19 @@ djsim:
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    **I am the antagonist to the mundane, guided only by my curiosity.**
     
-    Open `_data/authors.yml` to edit this text.
+    **I play instruments for passing the time blissfully.**
+
+    **I started flying planes for a wager between friends.**
+    
+    **I scuba dive for true peace and quiet.**
+    
+    **I host yearly city-wide carnivals for my community I hold dear.**
+    
+    **I was forklift certified for a meme back in 2018.**
+
+    ## I'm curious, what do you do for fun?
 
   # This photo will be used in the about section
   picture:
