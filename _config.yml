@@ -334,6 +334,7 @@ plugins:
   - jekyll-pdf-embed
   - liquid_reading_time
   - jekyll-spaceship
+  - jekyll-target-blank
 
 
 # SEO Tag

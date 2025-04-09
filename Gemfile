@@ -60,6 +60,7 @@ group :jekyll_plugins do
   gem "jekyll-pdf-embed"
   gem "liquid_reading_time"
   gem 'jekyll-spaceship'
+  gem 'jekyll-target-blank'
 
   # Non-Github Pages plugins:
   gem "jekyll-last-modified-at"

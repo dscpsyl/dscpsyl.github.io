@@ -106,6 +106,9 @@ GEM
       jekyll (>= 3.6, < 5.0)
       nokogiri (~> 1.6)
       rainbow (~> 3.0)
+    jekyll-target-blank (2.0.2)
+      jekyll (>= 3.0, < 5.0)
+      nokogiri (~> 1.10)
     jekyll-titles-from-headings (0.5.3)
       jekyll (>= 3.3, < 5.0)
     jekyll-watch (2.2.1)
@@ -254,6 +257,7 @@ DEPENDENCIES
   jekyll-seo-tag
   jekyll-sitemap
   jekyll-spaceship
+  jekyll-target-blank
   jekyll-theme-hydejack!
   jekyll-titles-from-headings
   jekyll_picture_tag
