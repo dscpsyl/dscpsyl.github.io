@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
-echo -e "Serving the site in local dev and debug mode...\n"
-jekyll serve --livereload --trace
+echo -e "Serving the site in local dev and debug mode...\n";
+cd $(pwd);
+
+source ./.scripts/check-deps.sh;
+
+bundle install;
+
+jekyll serve --livereload --trace;

@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 echo -e "Building the site for production...\n"
+cd $(pwd);
+
+source ./.scripts/check-deps.sh;
+
+bundle install;
+
 export JEKYLL_ENV="production";
 bundle exec jekyll build;
 
