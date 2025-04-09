@@ -1,0 +1,184 @@
+{{ assign background_color = include.bkclr }}
+
+<canvas id="meshCanvas"></canvas>
+<style>
+  #meshCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    /* background-color: {{ background_color }}; */
+    background-color: #000;
+  }
+</style>
+<script>
+const _canvas = document.getElementById("meshCanvas");
+const ctx = _canvas.getContext("2d");
+
+_canvas.width = window.innerWidth;
+_canvas.height = window.innerHeight;
+
+let points = [];
+let edges = [];
+const maxDistance = 150;
+const moveSpeed = 0.1;
+const fadeSpeed = 0.001;
+const mouseInfluence = 100;
+const idleThreshold = 1000;
+
+let lastMoveTime = Date.now(); // Tracks the last time the cursor moved
+
+
+// Generate initial points
+function createPoints(count) {
+    points = [];
+    for (let i = 0; i < count; i++) {
+        points.push({
+            x: Math.random() * _canvas.width,
+            y: Math.random() * _canvas.height,
+            vx: (Math.random() - 0.5) * moveSpeed,
+            vy: (Math.random() - 0.5) * moveSpeed,
+            opacity: Math.random() * 0.5 + 0.5,
+        });
+    }
+}
+
+// Create edges between nearby points (for the wireframe effect)
+function createEdges() {
+    edges = [];
+    for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // If the distance is within the maximum range, create an edge
+            if (distance < maxDistance) {
+                edges.push([points[i], points[j]]);
+            }
+        }
+    }
+}
+
+// Draw the edges of the mesh
+function drawMesh() {
+    ctx.clearRect(0, 0, _canvas.width, _canvas.height);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.lineWidth = 0.8;
+
+    // Draw all edges
+    edges.forEach(([p1, p2]) => {
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.closePath();
+        ctx.stroke();
+    });
+
+    // Draw points
+    points.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.fill();
+    });
+}
+
+// Update point positions and fade effects
+function updatePoints() {
+    points.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce off walls
+        if (p.x < 0 || p.x > _canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > _canvas.height) p.vy *= -1;
+
+        // Fade effect
+        p.opacity -= fadeSpeed;
+        if (p.opacity <= 0) {
+            p.x = Math.random() * _canvas.width;
+            p.y = Math.random() * _canvas.height;
+            p.opacity = Math.random() * 0.5 + 0.5;
+        }
+    });
+}
+
+// Attract points toward the mouse and slow down when leaving the influence area
+let mouse = { x: null, y: null };
+_canvas.addEventListener("mousemove", (event) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+    lastMoveTime = Date.now(); // Reset the idle timer on mouse movement
+});
+
+_canvas.addEventListener("mouseleave", () => {
+    mouse.x = null;
+    mouse.y = null;
+});
+
+function applyMouseInfluence() {
+    let timeSinceLastMove = Date.now() - lastMoveTime;
+
+    points.forEach(p => {
+        let dx = mouse.x - p.x;
+        let dy = mouse.y - p.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        // When the point is within the mouse influence range
+        if (distance < mouseInfluence) {
+            p.vx += dx * 0.001;
+            p.vy += dy * 0.001;
+        } else {
+            // Gradually slow down the velocity to moveSpeed after leaving the sphere of influence
+            if (Math.abs(p.vx) > moveSpeed) {
+                p.vx *= 0.999; // Slow down the velocity gradually
+            } else {
+                p.vx = (p.vx < 0 ? -moveSpeed : moveSpeed); // Clamp to moveSpeed
+            }
+
+            if (Math.abs(p.vy) > moveSpeed) {
+                p.vy *= 0.999; // Slow down the velocity gradually
+            } else {
+                p.vy = (p.vy < 0 ? -moveSpeed : moveSpeed); // Clamp to moveSpeed
+            }
+        }
+
+        // Slow down the points if the cursor is idle for too long
+        if (timeSinceLastMove > idleThreshold) {
+            if (Math.abs(p.vx) > moveSpeed) {
+                p.vx *= 0.995; // Slowly slow down even further after idle
+            } else {
+                p.vx = (p.vx < 0 ? -moveSpeed : moveSpeed);
+            }
+
+            if (Math.abs(p.vy) > moveSpeed) {
+                p.vy *= 0.995; // Slowly slow down even further after idle
+            } else {
+                p.vy = (p.vy < 0 ? -moveSpeed : moveSpeed);
+            }
+        }
+    });
+}
+
+// Animation loop
+function animate() {
+    updatePoints();
+    createEdges(); // Recalculate edges every frame
+    applyMouseInfluence();
+    drawMesh();
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener("resize", () => {
+    _canvas.width = window.innerWidth;
+    _canvas.height = window.innerHeight;
+    createPoints(80);
+});
+
+createPoints(80);
+animate();
+</script>
