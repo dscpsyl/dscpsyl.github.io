@@ -4,7 +4,7 @@ title: jGrade2
 caption: An updated grader for CS teachers.
 description: >
   An updated plugin for Gradescope users to grade Java submissions like a pro. Updated now for Java 21 and JUnit5 with easy Maven integration.
-date: 2023-10-13
+date: 2024-10-13
 image: 
   path: /assets/img/projects/jgrade2-cover.png
 links:
