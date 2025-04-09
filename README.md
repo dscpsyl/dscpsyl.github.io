@@ -41,8 +41,6 @@ TLDR: Just add a new `post.md` to the `_posts` folder for a post with some front
 ```markdown
 layout: post
 title: Example Content
-description: >
-  Howdy! This is an example blog post that shows several types of HTML content supported in this theme.
 image:
     path: /assets/img/blog/example.png
 categories: [example, content]
@@ -52,6 +50,8 @@ tags: [example, content]
 The name of the file is in the format `YEAR-MONTH-DAY-title.MARKUP`.
 
 See `/docs/writing/` for specific details about writting for this theme.
+
+> **Note**: We also have a way to natively embed *pdfs* and *ppts* into the site. See the [pdf plugin](https://github.com/MihajloNesic/jekyll-pdf-embed) for more details.
 
 ## How to Add a Project
 Projects are made the same as *Posts*, but just under a different collection (under the `_projects` folder). An example front matter is shown below:
@@ -80,7 +80,7 @@ theme_color: '#193747'
 sitemap: false
 ```
 
-> **Note**:  While the above is the native way for the theme to use images, you can also use the [picture plugin](https://rbuchberger.github.io/jekyll_picture_tag/) instead.
+> **Note**: While the above is the native way for the theme to use images, you can also use the [picture plugin](https://rbuchberger.github.io/jekyll_picture_tag/) instead.
 
 The name of the file can be whaever you want it to be, but it is recommended to use the title of the project.
 
