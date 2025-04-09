@@ -1,6 +1,6 @@
 ---
 layout: research
-title: Research
+title: A List of My Studiousness
 description: >
   Some papers that I wrote and helped with.
 permalink: /research/

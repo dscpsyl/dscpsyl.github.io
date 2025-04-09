@@ -1,6 +1,6 @@
 ---
 layout: about
-title: About Me
+title: A Little About Me
 sitemap: true
 cover: true
 ---
