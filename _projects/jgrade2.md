@@ -14,7 +14,6 @@ links:
 
 # JGrade2
 
-
 1. 
 {: toc }
 
