@@ -15,10 +15,7 @@ links:
 # JGrade2
 
 
-1. [I (kinda) don't like Java](#i-kinda-dont-like-java)
-2. [Outdated-ness](#outdated-ness)
-3. [Enter jGrade2](#enter-jgrade2)
-4. [Conclusion](#conclusion)
+1. 
 {: toc }
 
 ## I (kinda) don't like Java
