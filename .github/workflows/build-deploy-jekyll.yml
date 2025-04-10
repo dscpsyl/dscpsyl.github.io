@@ -35,6 +35,6 @@ jobs:
         with:
           provider: 'github'
           token: ${{ secrets.GITHUB_TOKEN }}
-          pre_build_commands: pacman -S --noconfirm libvips nodejs npm imagemagick
+          pre_build_commands: pacman -S --noconfirm nodejs npm imagemagick libvips lcms2 openjpeg2 libpng libwebp libheif imagemagick openslide libjxl poppler-glib
         
     
