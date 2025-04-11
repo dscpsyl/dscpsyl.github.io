@@ -1,0 +1,6 @@
+Ketchup is WeirdWhy is it that ketchup is such a basic condiment but you can add so much to it and spice things up. It is a basic tool for you to create wonderful new identities out of. Much like a Raspberry Pi or an Arduino, you are provided with the bare bones of a new invention. You can just use it as is or create something more out of it. With ketchup, people never add anything to it and are content with the basic taste. (Did you know ketchup is not even recognized by the Official Hotdog Association as a valid condiment to put on a hot dog?) I encourage anyone and everyone to experiment outside of the norm and create their own flavors with not just ketchup, but other condiments, sauces, and dishes too. Make something that is unique and pleasant to you. Below is an image, from iFunny to get you started in the ketchup world. Anyways, this is just filler text for the front page of this website. You don’t have to do any of this and I really don’t care if you do. Live your life how you want man. Live, love, laugh, and all that good stuff. Good luck whoever you are; you got this; try not to die.
+
+![Variations of Ketchup](/assets/img/blog/hellodadiam_archive-ketchup.jpg)
+
+A variety of combinations to make ketchup so much better.
+{:.figcaption}
