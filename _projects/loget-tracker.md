@@ -219,7 +219,7 @@ return render(request, "tracker/index.html", context)
 
 I won't show or explain every part of the static and template items, but here are the main points. Besides the buttons to login and signup, this front page only has a bunch of image `<div>`s to contain the card images that will scroll past behind. If we somehow cannot access the database or the backend returns an error, we degrade gracefully and simply use the first six card IDs as the cards for the background animation.
 
-~~~html
+~~~
 <div class="background">
   {% if imgs %}
     {% for img in imgs %}
@@ -365,7 +365,7 @@ return render(request, "tracker/tracker.html", context)
 
 Speaking of the template, the tracker page is even more simple than the index page. Besides the helper functions like username, settings, etc., we simply loop through each card in the context, display it on the page, and add an overlay for checking and unchecking a card from the user's collection.
 
-~~~html
+~~~
 {% if cards %}
   <div class="container">
     {% for card in cards %}
