@@ -219,7 +219,7 @@ return render(request, "tracker/index.html", context)
 
 I won't show or explain every part of the static and template items, but here are the main points. Besides the buttons to login and signup, this front page only has a bunch of image `<div>`s to contain the card images that will scroll past behind. If we somehow cannot access the database or the backend returns an error, we degrade gracefully and simply use the first six card IDs as the cards for the background animation.
 
-~~~
+```
 <div class="background">
   {% if imgs %}
     {% for img in imgs %}
@@ -234,7 +234,7 @@ I won't show or explain every part of the static and template items, but here ar
     <div class="card"><img src="https://loget-card.jp/img/card/006.png"/></div>
   {% endif %}
 </div>
-~~~
+```
 
 Now for the fun part. I want the cards to have a random duration of scrolling past the screen. For that, we will use Javascript to generate random durations for each `<div>` that has the `.card` class. This was, we can continue the annimation in CSS.
 
@@ -365,7 +365,7 @@ return render(request, "tracker/tracker.html", context)
 
 Speaking of the template, the tracker page is even more simple than the index page. Besides the helper functions like username, settings, etc., we simply loop through each card in the context, display it on the page, and add an overlay for checking and unchecking a card from the user's collection.
 
-~~~
+```
 {% if cards %}
   <div class="container">
     {% for card in cards %}
@@ -381,7 +381,7 @@ Speaking of the template, the tracker page is even more simple than the index pa
     {% endfor %}
   </div>
 {% endif %}
-~~~
+```
 
 The javascript simple handles the click events for the buttons and the communication with the backend. As such, I won't be showing it here. The CSS is much more fun as a few things needed to happen. I needed all non-collected cards to be greyed out, but still have them highlighted when hovered over. Because there is padding between each card, the overlay must follow the shape of the card. The buttons mus talso show changed when hovered over, independently of the card itself. Finally, we need to add some more styling to make everything easy on the eyes.
 
