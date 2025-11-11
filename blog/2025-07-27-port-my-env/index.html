@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Port My Environment | David Jr Sim</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="Port My Environment">
+<meta name="author" content="David Jr Sim">
+<meta property="og:locale" content="en">
+<meta name="description" content="I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.">
+<meta property="og:description" content="I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.">
+<link rel="canonical" href="https://www.printhello.world/blog/2025-07-27-port-my-env/">
+<meta property="og:url" content="https://www.printhello.world/blog/2025-07-27-port-my-env/">
+<meta property="og:site_name" content="David Jr Sim">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-07-27T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Port My Environment"> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"David Jr Sim"},"dateModified":"2025-11-11T02:02:28+00:00","datePublished":"2025-07-27T00:00:00+00:00","description":"I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.","headline":"Port My Environment","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.printhello.world/blog/2025-07-27-port-my-env/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://www.printhello.world/assets/img/logo.svg"},"name":"David Jr Sim"},"url":"https://www.printhello.world/blog/2025-07-27-port-my-env/"}</script><meta name="keywords" content="David,David Jr,Sim,computer,scientist,researcher,automation,AI,artificial intelligence,machine learning,homebrew,server">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="rgb(8, 0, 18)">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="David Jr Sim">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="David Jr Sim">
+<meta name="generator" content="Hydejack v9.2.1">
+<link rel="alternate" href="https://www.printhello.world/blog/2025-07-27-port-my-env/" hreflang="en">
+<link type="application/atom+xml" rel="alternate" href="https://www.printhello.world/feed.xml" title="David Jr Sim">
+<link rel="shortcut icon" href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+<link rel="manifest" href="/assets/site.webmanifest">
+<link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG">
+<link rel="dns-prefetch" href="/assets/js/search-worker-9.2.1.js" as="worker" id="_hrefSearch">
+<link rel="dns-prefetch" href="/assets/bower_components/katex/dist/katex.min.css" id="_katexPreload"> <noscript><link rel="stylesheet" href="/assets/bower_components/katex/dist/katex.min.css"></noscript> <script>((r,a)=>{function d(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=a.createElement("script"),e=(n.src=e,t&&d(n,"load",t,{once:!0}),a.scripts[0]);return e.parentNode.insertBefore(n,e),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=a.createElement("script");function o(){r._loaded=!0,t&&d(n,"load",t,{once:!0});var e=a.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():d(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){d(a.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}})(window,document); !function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this); !function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this); !function(w) { w._baseURL = '/'; w._publicPath = '/assets/js/'; w._noPushState = false; w._noDrawer = false; w._noNavbar = false; w._noToc = false; w._noSearch = false; w._advertise = false; w._search = { DATA_URL: '/assets/sitedata.json?no-cache', STORAGE_KEY: 'mini-search/', INDEX_KEY: 'index--2025-11-11T02:09:28+00:00', }; w._clapButton = false; }(window);</script><style id="_styleInline"> .clearfix,.sidebar-social::after{content:"";display:table;clear:both}.color-transition,.content .avatar,.nav-btn,.nav-btn-bar,.navbar,.message,.note-sm,#markdown-toc,.note,.hr-bottom,.hr-after::after,hr,.hr,p,body{transition:none}#_dark-mode{font-size:1.25rem}@media screen{body,body.light-mode{--body-color: #333;--body-bg: #fff;--border-color: #ebebeb;--gray: #777;--gray-bg: rgba(0, 0, 0, 0.025);--gray-text: #666;--menu-text: #bbb;--inv-body-color: #ccc;--inv-body-bg: var(--dark-mode-body-bg)}body .content,body.light-mode .content{-webkit-font-smoothing:initial;-moz-osx-font-smoothing:initial}body.dark-mode{--body-color: #ccc;--body-bg: var(--dark-mode-body-bg);--border-color: var(--dark-mode-border-color);--gray: rgba(255,255,255,.5);--gray-bg: rgba(255,255,255,.033);--gray-text: rgba(255,255,255,.625);--menu-text: rgba(255,255,255,.25);--inv-body-color: #333;--inv-body-bg: #fff}body.dark-mode .content{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}}@media screen and (prefers-color-scheme: light){body{--body-color: #333;--body-bg: #fff;--border-color: #ebebeb;--gray: #777;--gray-bg: rgba(0, 0, 0, 0.025);--gray-text: #666;--menu-text: #bbb;--inv-body-color: #ccc;--inv-body-bg: var(--dark-mode-body-bg)}body .content{-webkit-font-smoothing:initial;-moz-osx-font-smoothing:initial}}@media screen and (prefers-color-scheme: dark){body{--body-color: #ccc;--body-bg: var(--dark-mode-body-bg);--border-color: var(--dark-mode-border-color);--gray: rgba(255,255,255,.5);--gray-bg: rgba(255,255,255,.033);--gray-text: rgba(255,255,255,.625);--menu-text: rgba(255,255,255,.25);--inv-body-color: #333;--inv-body-bg: #fff}body .content{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.tippy-content{-webkit-font-smoothing:initial;-moz-osx-font-smoothing:initial}}html{--font-family: Noto Sans, Helvetica, Arial, sans-serif;--font-family-heading: Roboto Slab, Helvetica, Arial, sans-serif;--code-font-family: Fira Code, Menlo, Monaco, Consolas, monospace;--root-font-size: 15px;--root-font-size-medium: 16px;--root-font-size-large: 17px;--root-font-size-print: 8pt;--root-line-height: 1.75;--font-weight: 400;--font-weight-bold: 700;--font-weight-heading: 900;--content-width-5: 54rem;--content-margin-5: 4rem;--sidebar-width: 21rem;--half-content: 31rem;--break-point-3: 64em;--break-point-5: 86em;--break-point-dynamic: 104rem}*{box-sizing:border-box}html,body{margin:0;padding:0}html{font-family:var(--font-family);font-size:var(--root-font-size);line-height:var(--root-line-height)}body{color:var(--body-color);background-color:var(--body-bg);font-weight:var(--font-weight);overflow-y:scroll}.content img,.img,.content video,.video{max-width:100%;height:auto}.lead{margin-left:-1rem;margin-right:-1rem;margin-bottom:1.5rem}img.lead,video.lead{display:block;max-width:calc(100% + 2rem);width:calc(100% + 2rem);height:auto}.heading,.f6,h6,.h6,.f5,h5,.h5,.f4,.sidebar-nav-item,h4,.h4,.post-date,.f3,h3,.h3,.f2,h2,.h2,.f1,h1,.h1{font-family:var(--font-family-heading);font-weight:var(--font-weight-heading)}.f1,h1,.h1{font-size:2rem;line-height:1.3}.f2,h2,.h2{font-size:1.5rem;line-height:1.4}.f3,h3,.h3{font-size:1.2em;line-height:1.5}.f4,.sidebar-nav-item,h4,.h4,.post-date{font-size:1.08rem;line-height:1.6}.f5,h5,.h5{font-size:1.04rem;line-height:1.7}.f6,h6,.h6{font-size:1rem}.content h1>a,.content .h1>a{text-decoration:none;border-bottom:none}@media screen and (max-width: 42em){.content h1,.content .h1{font-size:1.7rem;line-height:1.35}}@media screen and (min-width: 86em){.content h1,.content .h1{font-size:2.4rem;line-height:1.25}}@media screen and (min-width: 104rem){body:not(.no-large-headings) .content h1,body:not(.no-large-headings) .content .h1{width:calc(100% + 50vw - 32rem);font-size:3rem;line-height:1.2}}@media screen and (min-width: 124em){body:not(.no-large-headings) .content h1,body:not(.no-large-headings) .content .h1{font-size:4rem;line-height:1.1}}h1,h2,h3,.h1,.h2,.h3{margin:4rem 0 1rem}h4,h5,h6,.h4,.post-date,.h5,.h6{margin:3rem 0 .5rem}p{margin-top:0;margin-bottom:1rem}p.lead{font-size:1.2em;margin-top:1.5rem;margin-bottom:1.5rem;padding:0 1rem}ul,ol,dl{margin-top:0;margin-bottom:1rem}ul,ol{padding-left:1.25rem}hr,.hr{border:0;margin:1rem 0;border-top:1px solid var(--border-color)}.hr-after::after{content:"";display:block;margin:1rem 0;border-top:1px solid var(--border-color)}.hr-bottom{border-bottom:1px solid var(--border-color);padding-bottom:.75rem;margin-bottom:1rem}.page{margin-bottom:3em}.page li+li{margin-top:.25rem}.page>header{position:relative;margin-bottom:2rem}@media screen and (min-width: 104rem){body:not(.no-third-column) .page>header>.lead+.note-sm,body:not(.no-third-column) .page>header>.lead+#markdown-toc,body:not(.no-third-column) .page>header>.lead+.note,body:not(.no-third-column) .page>header>a.no-hover+.note-sm,body:not(.no-third-column) .page>header>a.no-hover+#markdown-toc,body:not(.no-third-column) .page>header>a.no-hover+.note{position:absolute;right:-25rem;width:21rem;bottom:0;margin-bottom:0}}.page-title,.post-title{margin-top:0}.post-date{display:flex;justify-content:space-between;margin-top:-0.6rem;height:2rem;margin-bottom:.85rem;color:var(--gray)}.post-date>.ellipsis,.post-date#breadcrumbs>ul{cursor:pointer}.post-date [class^=icon-]{display:inline-block;font-size:smaller;margin-right:.25rem}.related-posts{padding-left:0;list-style:none;margin-bottom:2rem}.related-posts>li,.related-posts>li+li{margin-top:1rem}.message,.note-sm,#markdown-toc,.note{margin-bottom:1rem;padding:1rem;color:var(--gray-text);background-color:var(--gray-bg);margin-left:-1rem;margin-right:-1rem}.note-sm,#markdown-toc,.note{background:rgba(0,0,0,0);color:var(--body-color);font-size:smaller;border-left:1px solid var(--border-color);padding:1.2rem 1rem 0 1rem;margin:1rem -1rem;position:relative}.note-sm:before,#markdown-toc:before,.note:before{font-size:.667rem;font-weight:bold;font-style:normal;letter-spacing:.025rem;text-transform:uppercase;color:var(--menu-text);position:absolute;top:0}.note-sm[title]:before,[title]#markdown-toc:before,[title].note:before{content:attr(title) !important}.note{font-size:1rem}@media screen{body::before{content:"";width:.5rem;background:var(--gray-bg);position:fixed;left:0;top:0;bottom:0}}@media(min-width: 64em){body::before{width:21rem}}@media(min-width: 104rem){body::before{width:calc(50% - 31rem)}}@media screen and (min-width: 42em){html{font-size:var(--root-font-size-medium)}}@media screen and (min-width: 124em){html{font-size:var(--root-font-size-large)}}#breadcrumbs>ul{height:1rem;margin:-1.5rem 0 .5rem;padding:0;font-size:.667rem;color:var(--menu-text);text-transform:uppercase;width:100%;list-style:none}#breadcrumbs>ul>li{display:inline}#breadcrumbs>ul>li a{color:var(--gray);text-decoration:none;border-bottom:none}.fl{float:left}.fr{float:right}.mb4{margin-bottom:4rem}.mb6{margin-bottom:6rem}.mt0{margin-top:0}.mt1{margin-top:1rem}.mt2{margin-top:2rem}.mt3{margin-top:3rem}.mt4{margin-top:4rem}.pb0{padding-bottom:0}.ml1{margin-left:1rem}.mr1{margin-right:1rem}.sixteen-nine{position:relative}.sixteen-nine::before{display:block;content:"";width:100%;padding-top:56.25%}.sixteen-nine>*{position:absolute;top:0;left:0;right:0;bottom:0}.sixteen-ten{position:relative}.sixteen-ten::before{display:block;content:"";width:100%;padding-top:62.5%}.sixteen-ten>*{position:absolute;top:0;left:0;right:0;bottom:0}.four-three{position:relative}.four-three::before{display:block;content:"";width:100%;padding-top:75%}.four-three>*{position:absolute;top:0;left:0;right:0;bottom:0}.sr-only{display:none}.larger{font-size:larger}.smaller{font-size:smaller}.clearfix,.sidebar-social::after{content:"";display:table;clear:both}.ellipsis,#breadcrumbs>ul{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.border{border:1px solid var(--border-color)}@media(min-width: 42em){.border-radius,.lead,.page .aspect-ratio.sixteen-nine.lead{border-radius:.5rem}}.fallback-img{background-position:center;background-repeat:no-repeat;background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjkwIiB2aWV3Qm94PSIwIDAgMTYwIDkwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuMDQ4ODI4LCAwLCAwLCAwLjA0Nzk5MSwgNTQuOTk5OTczLCAyMC40MjgxNDgpIj4KICAgIDxwYXRoIHN0eWxlPSJmaWxsOnJnYmEoMTI4LDEyOCwxMjgsLjMzKSIgZD0iTTk1OS44ODQgMTI4YzAuMDQwIDAuMDM0IDAuMDgyIDAuMDc2IDAuMTE2IDAuMTE2djc2Ny43N2MtMC4wMzQgMC4wNDAtMC4wNzYgMC4wODItMC4xMTYgMC4xMTZoLTg5NS43N2MtMC4wNDAtMC4wMzQtMC4wODItMC4wNzYtMC4xMTQtMC4xMTZ2LTc2Ny43NzJjMC4wMzQtMC4wNDAgMC4wNzYtMC4wODIgMC4xMTQtMC4xMTRoODk1Ljc3ek05NjAgNjRoLTg5NmMtMzUuMiAwLTY0IDI4LjgtNjQgNjR2NzY4YzAgMzUuMiAyOC44IDY0IDY0IDY0aDg5NmMzNS4yIDAgNjQtMjguOCA2NC02NHYtNzY4YzAtMzUuMi0yOC44LTY0LTY0LTY0djB6Ii8+CiAgICA8cGF0aCBzdHlsZT0iZmlsbDpyZ2JhKDEyOCwxMjgsMTI4LC4zMykiIGQ9Ik04MzIgMjg4YzAgNTMuMDIwLTQyLjk4IDk2LTk2IDk2cy05Ni00Mi45OC05Ni05NiA0Mi45OC05NiA5Ni05NiA5NiA0Mi45OCA5NiA5NnoiLz4KICAgIDxwYXRoIHN0eWxlPSJmaWxsOnJnYmEoMTI4LDEyOCwxMjgsLjMzKSIgZD0iTTg5NiA4MzJoLTc2OHYtMTI4bDIyNC0zODQgMjU2IDMyMGg2NGwyMjQtMTkyeiIvPgogIDwvZz4KPC9zdmc+")}hy-push-state a{color:var(--body-color)}@supports not ((text-decoration-thickness: initial) and (text-underline-offset: initial)){hy-push-state a{text-decoration:none;border-bottom:2px solid}}@supports(text-decoration-thickness: initial) and (text-underline-offset: initial){hy-push-state a{text-decoration-style:solid;text-underline-offset:.35rem;text-decoration-thickness:2px}}hy-push-state a.no-hover{border-bottom:none;text-decoration-thickness:unset;text-underline-offset:unset}@supports(text-decoration-thickness: initial) and (text-underline-offset: initial){.content a:not(.btn):not(.no-hover){text-decoration-color:var(--accent-color-faded)}}.content a:not(.btn):not(.no-hover){border-color:var(--accent-color-faded)}.content .aspect-ratio{overflow:hidden}.content .aspect-ratio img{margin:0;width:100%;height:100%;background-color:var(--gray-bg)}hy-drawer{width:100%;position:relative;overflow:hidden;display:block;z-index:4}@media screen and (min-width: 64em){hy-drawer{position:fixed;width:21rem;top:0;left:0;bottom:0;margin-left:0}hy-drawer.cover{position:relative;width:100%}}@media screen and (min-width: 104rem){hy-drawer{width:calc(50% - 31rem)}}.sidebar{position:relative;display:flex;justify-content:center;align-items:center;color:hsla(0,0%,100%,.75);text-align:center;min-height:100vh}.sidebar.invert{color:rgba(32,32,32,.75)}.sidebar a{color:#fff;border-bottom-color:hsla(0,0%,100%,.2);text-decoration-color:hsla(0,0%,100%,.2)}.sidebar.invert a{color:#222;border-bottom-color:rgba(32,32,32,.2);text-decoration-color:rgba(32,32,32,.2)}.sidebar-bg{position:absolute;top:0;left:calc(50% - 50vw);width:100vw;height:100%;background:#202020 center/cover}.sidebar-bg::after{content:"";position:absolute;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,.05)}.sidebar-bg.sidebar-overlay::after{background:linear-gradient(to bottom, rgba(32, 32, 32, 0) 0%, rgba(32, 32, 32, 0.5) 50%, rgba(32, 32, 32, 0) 100%)}.sidebar-sticky{position:relative;z-index:3;max-width:21rem;padding:1.5rem;contain:content}.sidebar-about .avatar{margin-bottom:1.5rem}.sidebar-about>a.sidebar-title{text-decoration:none}.sidebar-about>a.sidebar-title>h2{margin:0;padding-bottom:.5rem}.sidebar-about>a.sidebar-title::after{content:"";display:block;border-bottom:2px solid;margin:0 auto .5rem;width:4rem;border-color:hsla(0,0%,100%,.2);transition:border-color 250ms}.sidebar-about>a.sidebar-title:hover::after{border-color:#fff;transition:border-color 50ms}.sidebar.invert .sidebar-about>a.sidebar-title::after{border-color:rgba(32,32,32,.2)}.sidebar.invert .sidebar-about>a.sidebar-title:hover::after{border-color:#222}.sidebar-nav>ul{list-style:none;padding-left:0}.sidebar-nav-item{display:inline-block;margin-bottom:.5rem}@media(min-width: 64em){#_main.no-drawer #_menu{display:none}#_main.no-drawer .nav-btn-bar>:nth-child(2){border:none}}.sidebar-social>ul{display:inline-block;list-style:none;padding-left:0;margin-bottom:0}.sidebar-social>ul>li{float:left}.sidebar-social>ul>li>a{display:inline-block;text-align:center;font-size:1.4rem;width:3rem;height:4rem;padding:.5rem 0;line-height:3rem;text-decoration:none;border-bottom-width:2px;border-bottom-style:solid}.sidebar-social>ul li+li{margin-top:0}.fixed-common,.fixed-bottom,.fixed-top{position:fixed;left:0;width:100%;z-index:2}.fixed-top{top:0}.fixed-bottom{bottom:0}.navbar>.content{position:relative;padding-top:0;padding-bottom:0;min-height:0;max-height:5rem}.nav-btn-bar{margin:0 -1rem;background-color:#fff;background-color:var(--body-bg);height:5rem;display:flex;align-items:center;position:relative}.nav-btn-bar>:first-child,.nav-btn-bar>:last-child{border:none}.nav-btn{background:none;border:none;text-decoration:none;display:flex;align-items:center;justify-content:center;width:3.25rem;height:5rem;color:var(--menu-text);border-right:1px solid var(--border-color);border-left:1px solid var(--border-color);margin-left:-1px}#markdown-toc{margin:2rem -1rem 2rem calc(-1rem + 1px);padding-left:2.5rem;padding-bottom:.5rem}#markdown-toc:before{left:1rem}@media screen and (min-width: 104rem){body:not(.no-toc) #markdown-toc{position:absolute;z-index:4;width:20.5rem;right:0;margin:auto;overflow:auto}}@media screen and (min-width: 104rem){body.no-break-layout:not(.no-toc) #markdown-toc{width:calc(50% - 31rem)}}.content{margin-left:auto;margin-right:auto;padding:8rem 1rem 12rem}@media screen{.content{padding-left:1.5rem;min-height:100vh}}@media screen and (min-width: 42em){.content{max-width:42rem}}@media screen and (min-width: 54em){.content{max-width:48rem}}@media screen and (min-width: 64em){.content{padding-left:1rem;margin-left:24rem;margin-right:3rem}}@media screen and (min-width: 86em){.content{padding-top:9rem;margin-left:25rem;margin-right:4rem;max-width:54rem}}@media screen and (min-width: 104rem){.content{margin:auto}}.large-only{display:none}@media screen and (min-width: 104rem){.large-only{display:block}}.avatar{width:7rem;height:7rem;border-radius:100%;overflow:hidden;display:inline-block}.avatar img{width:100%}.content .avatar{float:right;box-sizing:content-box;border:1rem solid var(--body-bg);transition:border-color 1s ease;margin-top:-1.5rem;margin-right:-1rem}.note:before{content:"Note"}.page>header>.note-sm:before,.page>header>.note:before,.page>header>#markdown-toc:before{content:"Description"}#markdown-toc:before{content:"Table of Contents"}.layout-resume .note-sm:before,.layout-resume .note:before,.layout-resume #markdown-toc:before{content:"Summary"} .clearfix,main:not(.layout-resume) .columns::after{content:"";display:table;clear:both}.color-transition,main:not(.layout-resume) .project-card{transition:none}main:not(.layout-resume) .columns{margin-left:-1rem;display:flex;flex-wrap:wrap;contain:content;padding-top:1rem;margin-top:1rem;padding-right:1rem;margin-right:-1rem}main:not(.layout-resume) .column{float:left;padding-left:1rem;margin-bottom:2rem;width:100%;display:flex}@media screen and (min-width: 42em){main:not(.layout-resume) .columns{margin-left:-2rem;margin-right:-2rem}main:not(.layout-resume) .column-1-2{width:50%}}@media screen and (min-width: 104rem){main:not(.layout-resume) .columns-break{width:calc(50vw + 25rem)}main:not(.layout-resume) .columns-break>.column-1-2,main:not(.layout-resume) .columns-break>.column-1{width:27.5rem}}@media print{main:not(.layout-resume) .columns{display:block}main:not(.layout-resume) .column{display:block;width:50%}}main:not(.layout-resume) .project-card{width:100%;color:var(--gray-text);background-color:var(--gray-bg);padding-bottom:1rem;position:relative;overflow:hidden;box-shadow:.125rem .125rem 1rem rgba(0,0,0,.2);contain:content;border-radius:.5rem;page-break-inside:avoid;transition:transform 500ms ease;will-change:transform}main:not(.layout-resume) .project-card:hover{transform:translateY(-0.25rem);transition:transform 250ms ease}main:not(.layout-resume) .project-card>a.flip-project{display:block}main:not(.layout-resume) .project-card>a.flip-project .project-card-img{margin-bottom:0}main:not(.layout-resume) .project-card>a.flip-project .project-card-img img{display:block;border-top-left-radius:.5rem;border-top-right-radius:.5rem}main:not(.layout-resume) .project-card a{position:relative;z-index:1}main:not(.layout-resume) .project-card a.fill-card{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0}main:not(.layout-resume) .project-card>.project-card-title,main:not(.layout-resume) .project-card>.project-card-text{text-align:center;padding:0 1rem}main:not(.layout-resume) .project-card>.project-card-title{display:block;font-size:1.08rem;margin-top:.75rem;margin-bottom:.25rem;color:inherit}main:not(.layout-resume) .project-card>.project-card-text{margin:.25rem 0}main:not(.layout-resume) .column-1>.project-card>.project-card-title{font-size:1.2rem}main:not(.layout-resume) .column-1>.project-card>.project-card-text{font-size:1rem}</style>
+<link rel="preload" as="style" href="/assets/css/hydejack-9.2.1.css" id="_stylePreload">
+<link rel="preload" as="style" href="/assets/icomoon/style.css" id="_iconsPreload"> <script> setRel('_stylePreload'); setRel('_iconsPreload'); /**/ </script> <noscript>
+<link rel="stylesheet" href="/assets/css/hydejack-9.2.1.css">
+<link rel="stylesheet" href="/assets/icomoon/style.css"> </noscript>
+<style id="_pageStyle"> html{--accent-color: rgb(168, 97, 255);--accent-color-faded: rgba(168, 97, 255, 0.5);--accent-color-highlight: rgba(168, 97, 255, 0.1);--accent-color-darkened: rgb(146.9382911392, 58.75, 255);--theme-color: rgb(8, 0, 18);--dark-mode-body-bg: hsl(266.6666666667, 12.5%, 17.5%);--dark-mode-border-color: hsl(266.6666666667, 12.5%, 22.5%)}</style>
+<meta charset="UTF-8">
+</head>
+<body class="no-break-layout"> <script> window._sunrise = 6; window._sunset = 18; ((e,s)=>{var d="light-mode",a="dark-mode",o=(new Date).getHours();"matchMedia"in e&&e.matchMedia("(prefers-color-scheme)")||(e=(o=o<=e._sunrise||o>=e._sunset?a:d)==a?d:a,s.body.classList.add(o),s.body.classList.remove(e))})(window,document); </script> <hy-push-state id="_pushState" replace-selector="#_main" link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)" script-selector="script" duration="500" hashchange><div id="_navbar" class="navbar fixed-top"><div class="content"> <span class="sr-only">Jump to:</span><div class="nav-btn-bar"> <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened"> <span class="sr-only">Navigation</span> <span class="icon-menu"></span> </a><div class="nav-span"></div>
+</div>
+</div></div>
+<hr class="sr-only" hidden>
+<main id="_main" class="content layout-post" role="main"><nav id="breadcrumbs" class="screen-only"><ul>
+<li><a href="/">home</a></li>
+<li> <span>/</span> <a href="/blog/">blog</a>
+</li>
+<li> <span>/</span> <span>2025-07-27-port-my-env</span>
+</li>
+</ul></nav><article id="post-blog-port-my-env" class="page post mb6" role="article"><header><h1 class="post-title flip-project-title"> Port My Environment</h1>
+<div class="post-date"> <span class="ellipsis mr1"> <time datetime="2025-07-27T00:00:00+00:00">27 Jul 2025</time> </span>
+</div>
+<p class="note-sm"> This article will take 7 minutes to read.</p></header><p>I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.</p>
+<ol id="markdown-toc">
+<li>
+<a href="#vbox" id="markdown-toc-vbox">VBox</a><ol><li><a href="#the-testing-workflow" id="markdown-toc-the-testing-workflow">The Testing Workflow</a></li></ol>
+</li>
+<li>
+<a href="#the-script" id="markdown-toc-the-script">The Script</a><ol>
+<li>
+<a href="#prerequisite" id="markdown-toc-prerequisite">Prerequisite</a><ol><li><a href="#let-the-managers-manage" id="markdown-toc-let-the-managers-manage">Let the Managers Manage</a></li></ol>
+</li>
+<li>
+<a href="#subroutines" id="markdown-toc-subroutines">Subroutines</a><ol>
+<li>
+<a href="#installers" id="markdown-toc-installers">Installers</a><ol>
+<li><a href="#macos" id="markdown-toc-macos">MacOS</a></li>
+<li><a href="#linux" id="markdown-toc-linux">Linux</a></li>
+<li><a href="#extendable" id="markdown-toc-extendable">Extendable</a></li>
+</ol>
+</li>
+<li><a href="#toml-helper" id="markdown-toc-toml-helper">TOML Helper</a></li>
+<li><a href="#transitions" id="markdown-toc-transitions">Transitions</a></li>
+<li><a href="#basic-printing" id="markdown-toc-basic-printing">Basic Printing</a></li>
+<li><a href="#user-interaction" id="markdown-toc-user-interaction">User Interaction</a></li>
+<li><a href="#logging" id="markdown-toc-logging">Logging</a></li>
+</ol>
+</li>
+<li>
+<a href="#setup" id="markdown-toc-setup">Setup</a><ol>
+<li><a href="#os-detection" id="markdown-toc-os-detection">OS Detection</a></li>
+<li><a href="#pretty-print" id="markdown-toc-pretty-print">Pretty Print</a></li>
+</ol>
+</li>
+<li>
+<a href="#main" id="markdown-toc-main">Main</a><ol>
+<li><a href="#git--ssh" id="markdown-toc-git--ssh">Git &amp; SSH</a></li>
+<li><a href="#main-package-manager" id="markdown-toc-main-package-manager">Main Package Manager</a></li>
+<li><a href="#zsh" id="markdown-toc-zsh">ZSH</a></li>
+<li><a href="#nodejs" id="markdown-toc-nodejs">NodeJS</a></li>
+<li><a href="#rush" id="markdown-toc-rush">Rush</a></li>
+<li><a href="#python" id="markdown-toc-python">Python</a></li>
+<li><a href="#make" id="markdown-toc-make">Make</a></li>
+<li><a href="#macos-defaults" id="markdown-toc-macos-defaults">MacOS Defaults</a></li>
+<li><a href="#tmux" id="markdown-toc-tmux">Tmux</a></li>
+<li><a href="#resh" id="markdown-toc-resh">RESH</a></li>
+<li><a href="#chruby" id="markdown-toc-chruby">Chruby</a></li>
+<li><a href="#chezmoi" id="markdown-toc-chezmoi">Chezmoi</a></li>
+<li><a href="#homebrew" id="markdown-toc-homebrew">Homebrew</a></li>
+</ol>
+</li>
+<li><a href="#cleanup" id="markdown-toc-cleanup">Cleanup</a></li>
+</ol>
+</li>
+<li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ol>
+<h2 id="vbox">VBox</h2>
+<p>It is in these low-level projects that the power of virtualization really shines. From the start of my coding days, my goto solution has been <a href="https://www.virtualbox.org/" target="_blank" rel="noopener noreferrer">Oracle’s VirtualBox</a>. It is free, open-source, cross-platform, and without any bloat. Critically, for me, it is compatible with my M-series MacBook.</p>
+<p>As I refuse to do anything in Powershell, this script will assume I have not lost my mind and am in a Unix environment. Because I like jellyfishes, I am using Ubuntu as my base OS for this project. However, the script will extend to the other major distributions, including MacOS. Using the ISO, I set up a basic installation of Ubuntu with a shared folder to my host machine. This is now my base image that I will copy for each iteration and test for my script.</p>
+<h3 id="the-testing-workflow">The Testing Workflow</h3>
+<p>With my CD/CI pipeline set up, I can now focus on the actual developonment of the script. My testing workflow is now as follows:</p>
+<ol>
+<li>Make sure the current version of the script is in the shared folder.</li>
+<li>Spin up a copy of the base image.</li>
+<li>Test the script.</li>
+<li>Rinse and repeat.</li>
+</ol>
+<p>It cannot get any simpler. No more setting up fresh environments or worries of contamination from previous tests. Once I have my script in an acceptable state, I can adjust the base image to other distributions and test again.</p>
+<h2 id="the-script">The Script</h2>
+<p>For the sake of universality, I have sacrilegiously chosen <code class="language-plaintext highlighter-rouge">bash</code> as the language. As such we must chant the spell at the beginning that will protect us from its curses:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+</code></pre></div></div>
+<h3 id="prerequisite">Prerequisite</h3>
+<p>Before touching the script, you need a list of the packages you want to install. It doesn’t have to be exhaustive, but it should cover the essentials and get your environment to a comfortable state.</p>
+<h4 id="let-the-managers-manage">Let the Managers Manage</h4>
+<p>There are countless package managers nowadays with robust features. Why reinvent the wheel? If the package manager can handle you dependencies, then let it. If it doesn’t need a standalone installation, don’t make it harder than it needs to be. This script is designed to leverage package managers to do the heavy lifting, so install all the managers you’ll need.</p>
+<p class="note" title="Note">As my version of the script relies on these managers, if you choose to not install them, the script will simply exit.</p>
+<h3 id="subroutines">Subroutines</h3>
+<p>Finally, with the planning phase out of the way, let’s get into the meat of the script. We will set ourselves up for success by defining the most common subroutines we will need for each installation.</p>
+<h4 id="installers">Installers</h4>
+<p>As we focus on Unix systems, we will look at the two routines we’ll need: Linux and MacOS.</p>
+<h5 id="macos">MacOS</h5>
+<p>As MacOS’s most popular, and arguably only, package manager is Homebrew, we will define a subroutine to install packages through it.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__macInstall<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+
+	brew <span class="nb">install</span> <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h5 id="linux">Linux</h5>
+<p>For Linux, we will prioritze <code class="language-plaintext highlighter-rouge">snap</code> as the primary package manager, with the distribution’s native package manager as a backup. If it is a <code class="language-plaintext highlighter-rouge">classic snap</code> app, we will also have to specify it during the install command. Here, we choose the four horsemen of distributions to support: Debian-based (<code class="language-plaintext highlighter-rouge">apt</code>), RedHat-based (<code class="language-plaintext highlighter-rouge">dnf</code>), Arch-based (<code class="language-plaintext highlighter-rouge">pacman</code>), and Fedora-based (<code class="language-plaintext highlighter-rouge">yum</code>).</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__linuxInstall<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">snap_classic</span><span class="o">=</span><span class="k">${</span><span class="nv">2</span><span class="p">-</span><span class="s2">""</span><span class="k">}</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> snap<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		if</span> <span class="o">[[</span> <span class="si">$(</span>snap find <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-c</span> <span class="s2">"^</span><span class="nv">$app</span><span class="s2"> "</span><span class="si">)</span> <span class="nt">-gt</span> 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sudo </span>snap <span class="nb">install</span> <span class="nv">$app</span> <span class="nv">$snap_classic</span><span class="p">;</span>
+			<span class="k">return </span>0<span class="p">;</span>
+		<span class="k">fi
+	fi
+
+	if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> apt<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Debian/Ubuntu</span>
+        <span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> dnf<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># RedHat</span>
+        <span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> yum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Fedora</span>
+        <span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> pacman<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Arch</span>
+        <span class="nb">sudo </span>pacman <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">else
+        </span><span class="nb">echo</span> <span class="s2">"ERROR::Unsupported Linux distribution. Please install </span><span class="nv">$app</span><span class="s2"> manually."</span> <span class="o">&gt;</span>&amp;2<span class="p">;</span>
+        <span class="nb">exit </span>2<span class="p">;</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h5 id="extendable">Extendable</h5>
+<p>To promote extensibility, you can easily add more subroutines for other operating systems or package managers as needed. When such new subroutines are added, you can simply add them as an option to the wrapper subroutine below that will call the appropriate installer based on the detected OS.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_install_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">snap_classic</span><span class="o">=</span><span class="k">${</span><span class="nv">2</span><span class="p">-</span><span class="s2">""</span><span class="k">}</span><span class="p">;</span>
+
+	<span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in
+		</span>linux<span class="k">*</span><span class="p">)</span>
+			__linuxInstall <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$snap_classic</span><span class="s2">"</span>
+			<span class="p">;;</span>
+	    darwin<span class="k">*</span><span class="p">)</span>
+			__macInstall <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span>
+			<span class="p">;;</span>
+	<span class="k">esac</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="toml-helper">TOML Helper</h4>
+<p>For one of my packages (Chezmoi), I will need to do work with TOML, and I will need to check for specific settings.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__tomlLineExists<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">line</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">section</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">file</span><span class="o">=</span><span class="s2">"</span><span class="nv">$3</span><span class="s2">"</span><span class="p">;</span>
+
+	<span class="nb">awk</span> <span class="nt">-v</span> <span class="nv">section</span><span class="o">=</span><span class="s2">"</span><span class="nv">$section</span><span class="s2">"</span> <span class="nt">-v</span> <span class="nv">line</span><span class="o">=</span><span class="s2">"</span><span class="nv">$line</span><span class="s2">"</span> <span class="s1">'
+		$0 == section { in_section=1 }
+        in_section &amp;&amp; $0 == line { found=1; exit }
+        END { exit !found }
+	'</span> <span class="s2">"</span><span class="nv">$file</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="transitions">Transitions</h4>
+<p>I want this script to be pretty. As such, I’ve used <a href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener noreferrer">gum</a> to handle user interactions and display messages. This subroutine will help with transitions between different states in the script.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_transition_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum spin <span class="nt">--spinner</span> line <span class="nt">--title</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">..."</span> <span class="nt">--</span> <span class="nb">sleep </span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">..."</span><span class="p">;</span>
+		<span class="nb">sleep </span>1<span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="basic-printing">Basic Printing</h4>
+<p>Of course, the pretty prints and UIs are not required. For those that cannot handle the extra weight, we will simply use <code class="language-plaintext highlighter-rouge">stdout</code> and these subroutines to print messages. Additionally, when the script is first starting up, it will not have the ability to pretty print, so these subroutines will be used there as well.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="s2">"# </span><span class="nv">$text</span><span class="s2">"</span> | gum format <span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+
+_print_header_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum style <span class="se">\</span>
+				<span class="nt">--foreground</span> 212 <span class="nt">--border-foreground</span> 91 <span class="nt">--border</span> double <span class="se">\</span>
+				<span class="nt">--align</span> center <span class="nt">--width</span> 50 <span class="nt">--margin</span> <span class="s2">"1 2"</span> <span class="nt">--padding</span> <span class="s2">"2 4"</span> <span class="se">\</span>
+				<span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"##########~</span><span class="nv">$text</span><span class="s2">~##########"</span><span class="p">;</span>
+		<span class="nb">echo</span> <span class="s2">"##################################################"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+
+_end_<span class="o">()</span> <span class="o">{</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>clear <span class="nt">-x</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"##################################################"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="user-interaction">User Interaction</h4>
+<p>We will need the user to input and confirm certain actions as this is an interactive script.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_confirm_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">prompt</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		if </span>gum confirm <span class="s2">"</span><span class="nv">$prompt</span><span class="s2">"</span><span class="p">;</span> <span class="k">then
+			return </span>0<span class="p">;</span>
+		<span class="k">else
+			return </span>1<span class="p">;</span>
+		<span class="k">fi
+	else
+		</span><span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$prompt</span><span class="s2"> (y/n) "</span> promptChoice<span class="p">;</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="nv">promptChoice</span><span class="p">,,</span><span class="k">}</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"y"</span> <span class="o">||</span> <span class="s2">"</span><span class="k">${</span><span class="nv">promptChoice</span><span class="p">,,</span><span class="k">}</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"yes"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			return </span>0<span class="p">;</span>
+		<span class="k">else
+			return </span>1<span class="p">;</span>
+		<span class="k">fi
+	fi</span>
+<span class="o">}</span>
+
+_input_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">placeholder</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="si">$(</span>gum input <span class="nt">--placeholder</span><span class="o">=</span><span class="s2">"</span><span class="nv">$placeholder</span><span class="s2">"</span><span class="si">)</span>
+	<span class="k">else
+		</span><span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$placeholder</span><span class="s2">: "</span> out<span class="p">;</span>
+		<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="logging">Logging</h4>
+<p>As with all good scripts, we will want to log what is and has had happened in the script.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_log_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">level</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$2</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum log <span class="nt">--prefix</span><span class="o">=</span><span class="s2">"[Port-My-Env]"</span> <span class="nt">--structured</span> <span class="nt">--time</span><span class="o">=</span>RFC850 <span class="nt">--level</span><span class="o">=</span><span class="nv">$level</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span> <span class="nt">--file</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/port-my-env.log"</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"[Port-My-Env] </span><span class="si">$(</span><span class="nb">date</span> +%Y/%m/%d-%H:%M:%S<span class="si">)</span><span class="s2"> (</span><span class="nv">$level</span><span class="s2">) </span><span class="nv">$text</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/port-my-env.log"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h3 id="setup">Setup</h3>
+<p>With all the subroutines defined, we can now do some quick housekeeping. Mainly, we need to check the OS compatibility and whether or not we will be using pretty printing.</p>
+<h4 id="os-detection">OS Detection</h4>
+<p>First thing’s first, we need to detect the OS. This will determine the packages, package managers, and other configurations needed. It will also exit the script immediately if the OS is unsupported. We will inform the user, log it, and finally start the script.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in
+	</span>linux<span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"linux"</span>
+		<span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> /etc/lsb-release <span class="nt">-o</span> <span class="nt">-d</span> /etc/lsb-release.d <span class="o">]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># If available, use LSB to identify distribution</span>
+    		<span class="nb">export </span><span class="nv">DISTRO</span><span class="o">=</span><span class="si">$(</span>lsb_release <span class="nt">-i</span> | <span class="nb">cut</span> <span class="nt">-d</span>: <span class="nt">-f2</span> | <span class="nb">sed </span>s/<span class="s1">'^\t'</span>//<span class="si">)</span>
+		<span class="k">else</span> <span class="c"># Otherwise, use release info file</span>
+    		<span class="nb">export </span><span class="nv">DISTRO</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-d</span> /etc/[A-Za-z]<span class="k">*</span><span class="o">[</span>_-][rv]e[lr]<span class="k">*</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"lsb"</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'/'</span> <span class="nt">-f3</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'-'</span> <span class="nt">-f1</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'_'</span> <span class="nt">-f1</span><span class="si">)</span>
+		<span class="k">fi</span>
+		<span class="p">;;</span>
+    darwin<span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"mac"</span>
+		<span class="p">;;</span>
+    <span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"__invalid__"</span>
+		<span class="p">;;</span>
+<span class="k">esac</span>
+
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"__invalid__"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ ERROR::This script is only intended <span class="k">for </span>UNIX devices.<span class="p">;</span>
+	<span class="nb">exit </span>1<span class="p">;</span>
+<span class="k">fi
+
+</span>_print_ <span class="s2">"We have detected that you are on a </span><span class="nv">$osName</span><span class="s2"> device."</span><span class="p">;</span>
+_log_ <span class="s2">"info"</span> <span class="s2">"Detected linux distro: </span><span class="nv">$DISTRO</span><span class="s2">"</span><span class="p">;</span>
+_log_ <span class="s2">"debug"</span> <span class="s2">"Starting script..."</span><span class="p">;</span>
+</code></pre></div></div>
+<h4 id="pretty-print">Pretty Print</h4>
+<p>As this script uses <code class="language-plaintext highlighter-rouge">gum</code> for pretty printing and user interaction, we will need to check if it is installed. If not, we will offer to install it for the user. If the user declines, we will proceed without pretty printing. Otherwise, <code class="language-plaintext highlighter-rouge">gum</code> has specific installation instructions based on the OS, so we will follow those and set the pretty print flag accordingly.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+<span class="nb">export </span>prettyPrint<span class="p">;</span>
+
+_print_header_ <span class="s2">"Step 0"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> gum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"This script has the ability to be interactive in a pretty way."</span><span class="p">;</span>
+	_print_ <span class="s2">"It will use gum (https://github.com/charmbracelet/gum</span><span class="se">\)</span><span class="s2"> as the prettifier."</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install and use gum?"</span><span class="p">;</span> <span class="k">then</span>
+		<span class="c"># For Linux gum install</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"linux"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    		<span class="c"># Check for Ubuntu and install</span>
+    		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$DISTRO</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"Ubuntu"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    			if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> gum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    				</span>_print_ <span class="s2">"You are on a linux distro that this script cannot automatically install gum for you."</span><span class="p">;</span>
+    				_print_ <span class="s2">"Please see the Github page and install manually and then rerun the script."</span><span class="p">;</span>
+    				<span class="nb">exit </span>0<span class="p">;</span>
+    			<span class="k">fi
+    		else
+    			</span><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/apt/keyrings<span class="p">;</span>
+				curl <span class="nt">-fsSL</span> https://repo.charm.sh/apt/gpg.key | <span class="nb">sudo </span>gpg <span class="nt">--dearmor</span> <span class="nt">-o</span> /etc/apt/keyrings/charm.gpg<span class="p">;</span>
+				<span class="nb">echo</span> <span class="s2">"deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/charm.list<span class="p">;</span>
+				<span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install </span>gum<span class="p">;</span>
+				_log_ <span class="s2">"info"</span> <span class="s2">"Autoinstalled gum via this script."</span><span class="p">;</span>
+    		<span class="k">fi
+		fi</span>
+
+		<span class="c"># For Mac gum install</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"Gum will be installed via Homebrew and will be deleted afterwards (if you so choose)."</span><span class="p">;</span>
+			_print_ <span class="s2">"If you have not installed Homebrew and do not want Homebrew, do not use pretty print on MacOS."</span><span class="p">;</span>
+			_input_ <span class="s2">"Press [ENTER] to continue or CTRL+C to exit."</span><span class="p">;</span>
+			<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> brew<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+				</span><span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  				<span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>/opt/homebrew/bin/brew shellenv<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  			<span class="k">fi
+  			</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1 brew <span class="nb">install </span>gum<span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Autoinstalled gum via this script."</span><span class="p">;</span>
+		<span class="k">fi
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">fi
+else
+	if </span>_confirm_ <span class="s2">"Gum has been detected on your computer. Would you like to use it for pretty print?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">fi
+fi
+
+if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>gum spin <span class="nt">--spinner</span> line <span class="nt">--title</span> <span class="s2">"Gum is being used! You should see a spinner..."</span> <span class="nt">--</span> <span class="nb">sleep </span>1<span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Using pretty printing."</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"No pretty printing today..."</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"No pretty printing today."</span>
+	_end_<span class="p">;</span>
+	<span class="nb">sleep </span>1<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+<h3 id="main">Main</h3>
+<p>Now the moment you’ve been waiting for: let’s get to the main script.</p>
+<h4 id="git--ssh">Git &amp; SSH</h4>
+<p>Like with a goods things in life, it is never complete without Git and SSH. With that, these will be the first things to set up. Due to the sensitive nature of these two tools, we will not automate their setup, but rather simply remind the user to have them installed and configured.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"New System Environment Porting Script"</span><span class="p">;</span>
+_print_ <span class="s2">"Please make sure that you have SSH and Git installed and enough configured that you can clone your private Github repos (i.e., with usable keys)."</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Are you ready to continue?"</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Please rerun the script once yo've set both of them up!"</span><span class="p">;</span>
+	_end_<span class="p">;</span>
+	<span class="nb">exit </span>1<span class="p">;</span>
+<span class="k">fi
+</span>_log_ <span class="s2">"info"</span> <span class="s2">"SSH and Git configuration confirmed"</span><span class="p">;</span>
+
+<span class="nv">GITHUB_USERNAME</span><span class="o">=</span><span class="s2">"dscpsyl"</span>
+<span class="nv">GITHUB_DOTS_REPO</span><span class="o">=</span><span class="s2">"dotfiles"</span>
+_print_ <span class="s2">"This script has your Github username as </span><span class="nv">$GITHUB_USERNAME</span><span class="s2"> and your dotfiles repo as </span><span class="nv">$GITHUB_DOTS_REPO</span><span class="s2">."</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Are these values correct?"</span><span class="p">;</span> <span class="k">then
+	</span><span class="nv">GITHUB_USERNAME</span><span class="o">=</span><span class="si">$(</span>_input_ <span class="s2">"Please type the correct Github Username..."</span><span class="si">)</span><span class="p">;</span>
+	<span class="nv">GITHUB_DOTS_REPO</span><span class="o">=</span><span class="si">$(</span>_input_ <span class="s2">"Please type the correct Github Repo Name..."</span><span class="si">)</span><span class="p">;</span>
+<span class="k">fi
+</span>_log_ <span class="s2">"info"</span> <span class="s2">"Using Github username </span><span class="nv">$GITHUB_USERNAME</span><span class="s2"> and gitub dotfiles repo name </span><span class="nv">$GITHUB_DOTS_REPO</span><span class="s2">"</span><span class="p">;</span>
+_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="main-package-manager">Main Package Manager</h4>
+<p>Now, we want to setup the main installer for all of our packages. On linux, we will ask if the user wants to autoupdate packages, and then ask to install <code class="language-plaintext highlighter-rouge">snap</code>. Both of these are optional, as we will already have the distro’s built-in manager, but recommended. On MacOS, we will ask to install <code class="language-plaintext highlighter-rouge">homebrew</code>. If this is declined, we will exit the script since MacOS has nothing else as popular.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Package Manager"</span>
+
+<span class="k">if </span>_confirm_ <span class="s2">"You are on a linux system. Would you like to auto-update installs?"</span><span class="p">;</span> <span class="k">then
+	</span><span class="nb">sudo </span>dpkg-reconfigure <span class="nt">--priority</span><span class="o">=</span>low unattended-upgrades<span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"DPKG auto update installed packages set"</span><span class="p">;</span>
+	_print_ <span class="s2">"DPKG setting set!"</span><span class="p">;</span>
+<span class="k">else
+	</span>_log_ <span class="s2">"warn"</span> <span class="s2">"DPKG auto update installed packages skipped"</span><span class="p">;</span>
+	_print_ <span class="s2">"No auto updating packages. Got it!"</span><span class="p">;</span>
+<span class="k">fi
+
+if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"linux"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> snap<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Snap is not installed"</span>
+
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Snap now?"</span><span class="p">;</span> <span class="k">then
+			</span>_install_ snapd<span class="p">;</span>
+			<span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> snapd.socket<span class="p">;</span>
+			<span class="nb">sudo ln</span> <span class="nt">-s</span> /var/lib/snapd/snap /snap<span class="p">;</span>
+
+			_print_ <span class="s2">"Snap installed successfully!"</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Snap installed"</span><span class="p">;</span>
+  		<span class="k">else
+  			</span>_print_ <span class="s2">"Skipping Snap installation"</span><span class="p">;</span>
+  			_log_ <span class="s2">"warn"</span> <span class="s2">"Snap installation skipped"</span><span class="p">;</span>
+		<span class="k">fi
+
+	else
+		</span>_print_ <span class="s2">"Snap found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Snap is already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+
+if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> brew<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Homebrew is not installed"</span><span class="p">;</span>
+		
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Homebrew now?"</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"This script requires Homebrew on MacOS to function. Exiting..."</span><span class="p">;</span>
+			_log_ <span class="s2">"fatal"</span> <span class="s2">"Homebrew instillation request denied on MacOS"</span><span class="p">;</span>
+			<span class="nb">exit </span>1<span class="p">;</span>
+		<span class="k">fi
+
+		if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>gum spin <span class="nt">--spinner</span><span class="o">=</span>line <span class="nt">--show-output</span> <span class="nt">--</span> <span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  		<span class="k">else
+  			</span><span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  		<span class="k">fi
+  		</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>/opt/homebrew/bin/brew shellenv<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+
+  		_print_ <span class="s2">"Homebrew installed successfully!"</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Homebrew installed"</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Homebrew found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Homebrew is already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="zsh">ZSH</h4>
+<p>I am a cult-bliever in <code class="language-plaintext highlighter-rouge">zsh</code> and <code class="language-plaintext highlighter-rouge">oh-my-zsh</code>. Thus, I have made these required in the script. To balance out this obsession, I have chosen to make making <code class="language-plaintext highlighter-rouge">zsh</code> the deault shell to be optional.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"ZSH Default Shell"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$SHELL</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"/usr/bin/zsh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if </span>_confirm_ <span class="s2">"Would you like to set ZSH as your default shell?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">USER</span><span class="o">=</span><span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span>
+		chsh <span class="nt">-s</span> <span class="si">$(</span>which zsh<span class="si">)</span> <span class="nv">$USER</span><span class="p">;</span>
+		_print_ <span class="s2">"ZSH set as default shell! You will be dropped into zsh the next time you log in."</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Default shell switched to ZSH."</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"We will ignore ZSH for now!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"ZSH default shell switch denied."</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"ZSH already default!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"ZSH is already the default shell."</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_print_header_ <span class="s2">"Oh-My-ZSH"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.oh-my-zsh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Oh-My-ZSH is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Oh-My-ZSH now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Oh-My-ZSH to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Oh-My-ZSH instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span><span class="nv">RUNZSH</span><span class="o">=</span>no sh <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+
+	_print_ <span class="s2">"Oh-My-ZSH installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Oh-My-ZSH installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Oh-My-ZSH found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Oh-My-ZSH is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="nodejs">NodeJS</h4>
+<p>As much as I like to hate on <code class="language-plaintext highlighter-rouge">javascript</code>, there is no denying that I partake in its wine from time to time. Thus, I will need <code class="language-plaintext highlighter-rouge">nodejs</code> installed. I have chosen <code class="language-plaintext highlighter-rouge">nvm</code> as my gateway drug and it will be the required manager for <code class="language-plaintext highlighter-rouge">nodejs</code>.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print_header_ <span class="s2">"NVM and NodeJS"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.nvm"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"NVM and NodeJS are not installed and are required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Would you like to install NVM (Node Version Manager) and NodeJS?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires NVM and NodeJS to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"NVM and NodeJS instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>curl <span class="nt">-o-</span> https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash<span class="p">;</span>
+	<span class="se">\.</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.nvm/nvm.sh"</span><span class="p">;</span>
+	nvm <span class="nb">install </span>node<span class="p">;</span>
+
+	_print_ <span class="s2">"NVM and NodeJS installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"NVM and NodeJS installed"</span><span class="p">;</span>
+<span class="k">else
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> node<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"NVM has been found on the system but not Node."</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"NVM is already installed on this system"</span><span class="p">;</span>
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Would you like to install NodeJS with NVM?"</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"This script requires NodeJS to function. Please manually install it. Exiting..."</span><span class="p">;</span>
+			_log_ <span class="s2">"fatal"</span> <span class="s2">"NodeJS instillation request denied"</span><span class="p">;</span>
+			<span class="nb">exit </span>1<span class="p">;</span>
+		<span class="k">fi
+		</span>nvm <span class="nb">install </span>node<span class="p">;</span>
+		_print_ <span class="s2">"NodeJS installed successfully!"</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"NodeJS installed"</span><span class="p">;</span>
+	<span class="k">else	
+		</span>_print_ <span class="s2">"NVM and NodeJS found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"NVM and NodeJS are already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="rush">Rush</h4>
+<p>I think <code class="language-plaintext highlighter-rouge">rust</code> is fine. It has its quirks, but overall it’sa comfortable language to work with. With its popularity, many of the tools I use are written in <code class="language-plaintext highlighter-rouge">rust</code> and on <code class="language-plaintext highlighter-rouge">crates</code>. Thus, having <code class="language-plaintext highlighter-rouge">crates</code> is another necessity.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Ruby"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> ruby<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Ruby is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Ruby now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Ruby to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Ruby instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ ruby <span class="s2">"--classic"</span><span class="p">;</span>
+
+	_print_ <span class="s2">"Ruby installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Ruby installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Ruby found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Ruby is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="python">Python</h4>
+<p>Good old <code class="language-plaintext highlighter-rouge">python</code>. Love it. Nothing else to say here. Most of the time, it should already be installed, but just in case, we will check and install it if needed. While I like <code class="language-plaintext highlighter-rouge">pip</code> as much as the next guy, some tools are better off more standalone, so <code class="language-plaintext highlighter-rouge">pipx</code> it is.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Python3"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> python3<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Python3 is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Python3 now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Python3 to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Python3 instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ python3<span class="p">;</span>
+
+	_print_ <span class="s2">"Python3 installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Python3 installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Python3 found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Python3 is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_print_header_ <span class="s2">"pipx"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> pipx<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"pipx is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install pipx now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires pipx to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"pipx instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ pipx<span class="p">;</span>
+	pipx ensurepath<span class="p">;</span>
+
+	_print_ <span class="s2">"pipx installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"pipx installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"pipx found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"pipx is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="make">Make</h4>
+<p>This should be on the system already, like <code class="language-plaintext highlighter-rouge">python</code>. It’s here more so as another just-in-case catch.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"make"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> make<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"make is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install make now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires make to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"make instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ make<span class="p">;</span>
+
+	_print_ <span class="s2">"make installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"make installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"make found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"make is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_transition_ <span class="s2">"Prerequisites Sastified! Continuing"</span><span class="p">;</span>
+_end_<span class="p">;</span>
+</code></pre></div></div>
+<p>You may have also noticed now that its starting to get pretty repetitive. I could wrap this structure up into another sobroutine for conciseness, but I was too lazy. You can make the change yourself, or just deal with it.</p>
+<h4 id="macos-defaults">MacOS Defaults</h4>
+<p>Now that the essential package managers are installed, let’s take a detour to MacOS land and apply my preferred defaults.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"MacOS Defaults"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to set the MacOS predefined defaults?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Setting MacOS Dock Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.Dock autohide-delay <span class="nt">-float</span> 0<span class="p">;</span>
+		defaults write com.apple.dock expose-animation-duration <span class="nt">-float</span> 0.12<span class="p">;</span>
+		defaults write com.apple.Dock showhidden <span class="nt">-bool</span> YES<span class="p">;</span>
+		defaults write com.apple.dock expose-animation-duration <span class="nt">-float</span> 0<span class="p">;</span>
+		killall Dock<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Dock Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Finder Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.finder QLEnableTextSelection <span class="nt">-bool</span> TRUE<span class="p">;</span>
+		defaults write com.apple.finder AppleShowAllFiles <span class="nt">-bool</span> YES<span class="p">;</span>
+		defaults write com.apple.finder FXDefaultSearchScope <span class="nt">-string</span> <span class="s2">"SCcf"</span><span class="p">;</span>
+		killall Finder<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Finder Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS ScreenCapture Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.screencapture location ~/Desktop<span class="p">;</span>
+		defaults write com.apple.screencapture <span class="nb">type </span>png <span class="o">&amp;&amp;</span> killall SystemUIServer<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS ScreenCapture Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting ~/Library/ noHidden Flag..."</span><span class="p">;</span>
+		chflags nohidden ~/Library/<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set ~/Library/ noHidden Flag"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS to show all extensions..."</span><span class="p">;</span>
+		defaults write <span class="nt">-g</span> AppleShowAllExtensions <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS to show all extensions"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS NSGlobalDomain Defaults..."</span><span class="p">;</span>
+		defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain PMPrintingExpandedStateForPrint <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 <span class="nt">-bool</span> truefloat 0.05<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS NSGlobalDomain Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Subpixel Anti-Aliasing (Font Smoothing)..."</span>
+		defaults write <span class="nt">-g</span> CGFontRenderingFontSmoothingDisabled <span class="nt">-bool</span> <span class="nb">false</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Subpixel Anti-Aliasing"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Focus Follows Mouse in Terminal..."</span>
+		defaults write com.apple.Terminal FocusFollowsMouse <span class="nt">-string</span> YES<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Focus Follows Mouse in Terminal"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+<h4 id="tmux">Tmux</h4>
+<p>I am a <code class="language-plaintext highlighter-rouge">tmux</code> man. It was my first multiplexer and my home. Are there better options? Maybe; I would argue not. Are there quirks and annoyances? Of course. But it is reliable and has never failed me, unlike other multiplexers. It is not a requirement here, but I will always press yes.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Tmux"</span><span class="p">;</span> <span class="c"># (https://github.com/tmux/tmux)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> tmux<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Tmux is not installed"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Do you want to install Tmux now?"</span><span class="p">;</span> <span class="k">then
+		
+		</span>_install_ tmux<span class="p">;</span>
+
+		_print_ <span class="s2">"Tmux installed successfully!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Tmux installed"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Who needs panels anyways!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Tmux installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"Tmux found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Tmux is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="resh">RESH</h4>
+<p>I’ve always found the basic shell history lacking. As such, here is my preferred shell history plugin.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"RESH (Rich Enhanced Shell History)"</span><span class="p">;</span> <span class="c"># (https://github.com/curusarn/resh)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.resh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"RESH is not installed"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install RESH (Rich Enhanced Shell History) and set keybindings?"</span><span class="p">;</span> <span class="k">then
+		
+		if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			if </span>_confirm_ <span class="s2">"This will also install coreutils on this Mac. Are you sure?"</span><span class="p">;</span> <span class="k">then
+				</span>brew <span class="nb">install </span>coreutils<span class="p">;</span>
+				curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/curusarn/resh/master/scripts/rawinstall.sh | bash<span class="p">;</span>
+				_print_ <span class="s2">"RESH installed successfully!"</span><span class="p">;</span>
+  				_log_ <span class="s2">"info"</span> <span class="s2">"RESH installed"</span><span class="p">;</span>
+  			<span class="k">else
+  				</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+				_log_ <span class="s2">"warn"</span> <span class="s2">"RESH installation denied"</span><span class="p">;</span>
+			<span class="k">fi
+		else
+			</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/curusarn/resh/master/scripts/rawinstall.sh | bash<span class="p">;</span>
+			_print_ <span class="s2">"RESH installed successfully!"</span><span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"RESH installed"</span><span class="p">;</span>
+		<span class="k">fi
+	else
+		</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"RESH installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"RESH found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"RESH is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="chruby">Chruby</h4>
+<p>I don’t often work with <code class="language-plaintext highlighter-rouge">ruby</code>, but when I do, I am alwasy on the wrong version.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Chruby"</span><span class="p">;</span> <span class="c"># (https://github.com/postmodern/chruby)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"/usr/local/share/chruby"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Chruby is not installed on this system and is used in ~/.zshrc."</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install Chruby (Ruby Version Manager)?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">latestChruby</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">-s</span> https://api.github.com/repos/postmodern/chruby/releases/latest<span class="si">)</span><span class="p">;</span>
+		<span class="nv">vChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$latestChruby</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'"tag_name": "\K[^"]+'</span><span class="si">)</span><span class="p">;</span>
+		<span class="nv">urlChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$latestChruby</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'"tarball_url": "\K[^"]+'</span><span class="si">)</span><span class="p">;</span>
+
+		curl <span class="nt">-L</span> <span class="nt">-o</span> chruby-latest.tar.gz <span class="s2">"</span><span class="nv">$urlChurby</span><span class="s2">"</span> &amp;&gt;/dev/null<span class="p">;</span>
+		<span class="nb">tar</span> <span class="nt">-xzf</span> chruby-latest.tar.gz<span class="p">;</span>
+		<span class="nv">repoChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">tar</span> <span class="nt">-tzf</span> chruby-latest.tar.gz | <span class="nb">awk</span> <span class="s1">'NR==1 {print $1}'</span><span class="si">)</span><span class="p">;</span>
+		<span class="nb">cd</span> <span class="s2">"</span><span class="nv">$repoChurby</span><span class="s2">"</span><span class="p">;</span>
+		<span class="nb">sudo</span> ./scripts/setup.sh<span class="p">;</span>
+
+		<span class="nb">cd</span> ..<span class="p">;</span>
+		<span class="nb">rm</span> <span class="nt">-r</span> <span class="s2">"</span><span class="nv">$repoChurby</span><span class="s2">"</span> chruby-latest.tar.gz<span class="p">;</span>
+
+		_print_ <span class="s2">"Chruby installed successfully!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Chruby installed"</span><span class="p">;</span>
+	
+	<span class="k">else
+		</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"chruby installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"chruby found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"chruby is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+<h4 id="chezmoi">Chezmoi</h4>
+<p>To tie all of these tools together, I have my dotfiles saved and managed with <code class="language-plaintext highlighter-rouge">chezmoi</code>. Of course, it doesn’t need to be installed if I need a more simple and vanilla setup. But here we will install it, configure it, and apply the dotfiles to all these environment tools. Here, we will use the info of <code class="language-plaintext highlighter-rouge">git</code> and <code class="language-plaintext highlighter-rouge">ssh</code> from the beginning of the script. It all comes full circle.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> chezmoi<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Dots and Files"</span><span class="p">;</span>
+	_print_ <span class="s2">"Chezmoi has been found on your system"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to pull all your dotfiles from your dotfiles repo?"</span><span class="p">;</span> <span class="k">then
+		if</span> <span class="o">[[</span> <span class="nt">-z</span> <span class="si">$(</span><span class="nb">ls</span> <span class="nt">-A</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.local/share/chezmoi"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>chezmoi init <span class="nt">--apply</span> git@github.com:<span class="nv">$GITHUB_USERNAME</span>/<span class="nv">$GITHUB_DOTS_REPO</span>.git<span class="p">;</span>
+			chezmoi apply<span class="p">;</span>
+			
+			_print_ <span class="s2">"Dotfiles applied!"</span><span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Dotfiles migrated to this machine"</span><span class="p">;</span>
+		<span class="k">else
+			</span>_print_ <span class="s2">"There seems to be an instance of Chezmoi here already. We will not init or apply anything for safety."</span>
+			_log_ <span class="s2">"error"</span> <span class="s2">"Existing instance of Chezmoi present"</span>
+		<span class="k">fi
+	else
+		</span>_print_ <span class="s2">"No dotfiles will be here!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Dotfile migration denied"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi
+
+if</span> <span class="o">[[</span> <span class="nt">-e</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Chezmoi Auto Update Dotfiles"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to update your Chezmoi config file to auto commit and push newly applied changes?"</span><span class="p">;</span> <span class="k">then		
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"^[git]$"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[git]"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span>__tomlLineExists <span class="s2">"autoCommit = true"</span> <span class="s2">"[git]"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"/^[git]</span><span class="se">\$</span><span class="s2">/a autoCommit = true"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+	
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span>__tomlLineExists <span class="s2">"autoPush = true"</span> <span class="s2">"[git]"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"/^[git]</span><span class="se">\$</span><span class="s2">/a autoPush = true"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+
+		</span>_print_ <span class="s2">"Chezmoi updated to autoupdate dotfile changes!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Chezmoi auto-update of dotfiles config applied"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Make sure to manually apply changes in the future!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Chezmoi auto-update of dotfiles denied"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+<h4 id="homebrew">Homebrew</h4>
+<p>You didn’t think I’d forgotten about <code class="language-plaintext highlighter-rouge">homebrew</code>, did you? Of course not. <code class="language-plaintext highlighter-rouge">homerew</code> stores its info in a <code class="language-plaintext highlighter-rouge">brewfile</code>, which is in my <code class="language-plaintext highlighter-rouge">dotfiles</code> repo. Thus, we will how apply this file to install all the pachages I need on MacOS.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Homebrew Programs"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install the MacOS predefined Homebrew applications from the Brewfile in your home directory?"</span><span class="p">;</span> <span class="k">then
+		</span>brew bundle <span class="nb">install</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Brewfile taps and casks installed!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Brewfile items installed on this Mac"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"It's a clean slate!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Brewfile not auto-installed on this Mac"</span><span class="p">;</span>
+  	<span class="k">fi
+  	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+<h3 id="cleanup">Cleanup</h3>
+<p>And that’s it! This is my version of the script, but please feel free to copy and adapt it to your own needs. You can find the full version <a href="https://gist.github.com/dscpsyl/91cdda5076efa3e20f3a5216426de4fb" target="_blank" rel="noopener noreferrer">here</a>. Before we termiante, let’s quickly cleanup <code class="language-plaintext highlighter-rouge">gum</code>, which we installed only for pretty printing.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Uninstalling gum"</span>
+	<span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>brew uninstall gum<span class="p">;</span>
+	<span class="k">elif</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$DISTRO</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"Ubuntu"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">sudo </span>apt-get <span class="nt">-y</span> purge gum<span class="p">;</span>
+		<span class="nb">sudo rm</span> /etc/apt/sources.list.d/charm.list<span class="p">;</span>
+		<span class="nb">sudo rm</span> /etc/apt/keyrings/charm.gpg<span class="p">;</span>
+	<span class="k">fi
+fi</span>
+</code></pre></div></div>
+<p>Finally, we will display some helpful reminders to the user before closing.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to press [PREFIX-I] in Tmux to install the plugins.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to execute :PlugInstall in Vim to install the plugins.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to generate any necessary GPG keys for Git and other applications.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"##################################################</span><span class="se">\n</span><span class="s2">"</span>
+</code></pre></div></div>
+<p>Congrats! How you will never need to manually install your environment again.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The purpose of this post is two fold. First, I needed an excuse to share my micro-obsession for the past week. Second, I wanted to remind both myself and you reading that automation and virtualization is an underutilized power combo. If it doesn’t need to be on bare metal, it’s worth considering a virtural buffer. Especially with the rise fo cloud computing, having your applications be modular and movable is more critical than ever.</p></article><hr class="dingbat related mb6">
+<aside class="other-projects related mb0" role="complementary"><h2>Related Posts</h2>
+<div class="columns">
+<div class="column column-1-2"><article class="project-card"> <a href="/blog/2025-01-17-computer-sciencer-vs-programmer/" class="no-hover no-print-link flip-project" tabindex="-1"><div class="project-card-img aspect-ratio sixteen-nine fallback-img"></div></a><h3 class="project-card-title flip-project-title"> <a href="/blog/2025-01-17-computer-sciencer-vs-programmer/" class="flip-title">Computer Science-r vs Programmer</a>
+</h3>
+<a class="fill-card no-hover" href="/blog/2025-01-17-computer-sciencer-vs-programmer/" tabindex="-1"><span class="sr-only">Continue reading Computer Science-r vs Programmer</span></a></article></div>
+<div class="column column-1-2"><article class="project-card"> <a href="/blog/2023-09-30-development-style/" class="no-hover no-print-link flip-project" tabindex="-1"><div class="project-card-img aspect-ratio sixteen-nine fallback-img"></div></a><h3 class="project-card-title flip-project-title"> <a href="/blog/2023-09-30-development-style/" class="flip-title">Collaborative Development Style</a>
+</h3>
+<a class="fill-card no-hover" href="/blog/2023-09-30-development-style/" tabindex="-1"><span class="sr-only">Continue reading Collaborative Development Style</span></a></article></div>
+</div></aside><footer class="content" role="contentinfo"><hr>
+<p><small class="copyright">© 2025 All rights reserved. </small><nav class="legal"><small> <a class="heading flip-title" href="https://github.com/dscpsyl/dscpsyl.github.io" target="_blank" rel="noopener noreferrer">This site is published with Github Pages</a> </small></nav></p>
+<hr class="sr-only"></footer></main><hy-drawer id="_drawer" class="" side="left" threshold="10" noscroll><header id="_sidebar" class="sidebar" role="banner"><div class="" style="">
+<canvas id="meshy"></canvas><style> #meshy { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; background-color: rgb(8, 0, 18); }</style>
+<script> const _canvas = document.getElementById("meshy"); const ctx = _canvas.getContext("2d"); _canvas.width = window.innerWidth; _canvas.height = window.innerHeight; const MAX_NUM_POINTS = 88; const POINT_MOVE_SPEED = 0.1; const MAX_EDGE_DISTANCE = 150; const POINT_FADE_SPEED = 0.001; const MOUSE_INFLUENCE_RADIUS = 100; const MOUSE_IDLE_THRESHOLD = 1000; const LINE_STROKE_COLOR = "rgba(255, 255, 255, 0.5)"; const LINE_STROKE_WIDTH = 0.8; const POINT_FILL_COLOR = "rgba(255, 255, 255, ${p.opacity})"; let points = []; let edges = []; window.addEventListener("resize", () => { _canvas.width = window.innerWidth; _canvas.height = window.innerHeight; createPoints(MAX_NUM_POINTS); }); function createPoints(count) { points = []; for (let i = 0; i < count; i++) { points.push({ x: Math.random() * _canvas.width, y: Math.random() * _canvas.height, vx: (Math.random() - 0.5) * POINT_MOVE_SPEED, vy: (Math.random() - 0.5) * POINT_MOVE_SPEED, opacity: Math.random() * 0.5 + 0.5, }); } } function createEdges() { edges = []; for (let i = 0; i < points.length; i++) { for (let j = i + 1; j < points.length; j++) { const dx = points[i].x - points[j].x; const dy = points[i].y - points[j].y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < MAX_EDGE_DISTANCE) { edges.push([points[i], points[j]]); } } } } function drawMesh() { ctx.clearRect(0, 0, _canvas.width, _canvas.height); ctx.strokeStyle = LINE_STROKE_COLOR; ctx.lineWidth = LINE_STROKE_WIDTH; edges.forEach(([p1, p2]) => { ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.closePath(); ctx.stroke(); }); points.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fillStyle = POINT_FILL_COLOR; ctx.fill(); }); } function updatePoints() { points.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > _canvas.width) p.vx *= -1; if (p.y < 0 || p.y > _canvas.height) p.vy *= -1; p.opacity -= POINT_FADE_SPEED; if (p.opacity <= 0) { p.x = Math.random() * _canvas.width; p.y = Math.random() * _canvas.height; p.opacity = Math.random() * 0.5 + 0.5; } }); } let mouse = { x: null, y: null }; let mouseMoveTime = Date.now(); window.addEventListener("mousemove", (event) => { mouse.x = event.clientX; mouse.y = event.clientY; mouseMoveTime = Date.now(); }); window.addEventListener("mouseleave", () => { mouse.x = null; mouse.y = null; }); let timeSinceLastMove = Date.now() - mouseMoveTime; function applyMouseInfluence() { timeSinceLastMove = Date.now() - mouseMoveTime; points.forEach(p => { let dx = mouse.x - p.x; let dy = mouse.y - p.y; let distance = Math.sqrt(dx * dx + dy * dy); if (distance < MOUSE_INFLUENCE_RADIUS) { p.vx += dx * 0.001; p.vy += dy * 0.001; } else { if (Math.abs(p.vx) > POINT_MOVE_SPEED) { p.vx *= 0.999; } else { p.vx = (p.vx < 0 ? -POINT_MOVE_SPEED : POINT_MOVE_SPEED); } if (Math.abs(p.vy) > POINT_MOVE_SPEED) { p.vy *= 0.999; } else { p.vy = (p.vy < 0 ? -POINT_MOVE_SPEED : POINT_MOVE_SPEED); } } if (timeSinceLastMove > MOUSE_IDLE_THRESHOLD) { if (Math.abs(p.vx) > POINT_MOVE_SPEED) { p.vx *= 0.995; } else { p.vx = (p.vx < 0 ? -POINT_MOVE_SPEED : POINT_MOVE_SPEED); } if (Math.abs(p.vy) > POINT_MOVE_SPEED) { p.vy *= 0.995; } else { p.vy = (p.vy < 0 ? -POINT_MOVE_SPEED : POINT_MOVE_SPEED); } } }); } createPoints(MAX_NUM_POINTS); function animate() { createEdges(); applyMouseInfluence(); drawMesh(); updatePoints(); requestAnimationFrame(animate); } animate(); </script>
+</div>
+<div class="sidebar-sticky">
+<div class="sidebar-about"> <a class="no-hover" href="/" tabindex="-1"> <img src="/assets/img/logo.svg" class="avatar" alt="David Jr Sim" width="120" height="120" loading="lazy"> </a> <a class="sidebar-title" href="/"><h2 class="h1" , style="font-size: 2.75em">David Jr Sim</h2></a><p class=""> Automation, AI, and the aforementioned uprising.</p>
+</div>
+<nav class="sidebar-nav heading" role="navigation"> <span class="sr-only">Navigation:</span><ul>
+<li> <a id="_drawer--opened" href="/blog/" class="sidebar-nav-item "> Blog </a>
+</li>
+<li> <a href="/projects/" class="sidebar-nav-item "> Showcase </a>
+</li>
+<li> <a href="/research/" class="sidebar-nav-item "> Research </a>
+</li>
+<li> <a href="/resume/" class="sidebar-nav-item "> Résumé </a>
+</li>
+</ul></nav><div class="sidebar-social"> <span class="sr-only">Social:</span><ul>
+<li> <a href="https://github.com/dscpsyl" title="GitHub" class="no-mark-external" target="_blank" rel="noopener noreferrer"> <span class="icon-github"></span> <span class="sr-only">GitHub</span> </a>
+</li>
+<li> <a href="https://www.linkedin.com/in/davidjsim" title="LinkedIn" class="no-mark-external" target="_blank" rel="noopener noreferrer"> <span class="icon-linkedin2"></span> <span class="sr-only">LinkedIn</span> </a>
+</li>
+</ul>
+</div>
+</div></header></hy-drawer><hr class="sr-only" hidden> </hy-push-state> <script nomodule>(()=>{var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())})(); </script> <script src="/assets/js/hydejack-9.2.1.js" type="module"></script> <script src="/assets/js/LEGACY-hydejack-9.2.1.js" nomodule defer></script> <script type="module"> if ('serviceWorker' in navigator) { /**/ navigator.serviceWorker.getRegistration() .then(r => r.unregister()) .catch(() => {}); /**/ } </script> <script> document.getElementById('_pushState').addEventListener('hy-push-state-after', function (e) { function e(e){ (console.error?console.error:console.log).call(console,e) } function t(e){ return l.innerHTML='<a href="'+e.replace(/"/g,"&quot;")+'"></a>',l.childNodes[0].getAttribute("href") } function r(e,t){ var r=e.substr(t,2);return parseInt(r,16) } function n(e,n){ for(var o="",c=r(e,n),a=n+2;a<e.length;a+=2){ var l=r(e,a)^c; o+=String.fromCharCode(l) } return t(o) } var o="/cdn-cgi/l/email-protection#", c=".__cf_email__", a="data-cfemail", l=document.createElement("div"); !function(){ for(var t=document.getElementsByTagName("a"),r=0;r<t.length;r++) try{ var c=t[r],a=c.href.indexOf(o); a>-1&&(c.href="mailto:"+n(c.href,a+o.length)) }catch(t){ e(t) } }(), function(){ for(var t=document.querySelectorAll(c),r=0;r<t.length;r++) try{ var o=t[r],l=n(o.getAttribute(a),0),i=document.createTextNode(l); o.parentNode.replaceChild(i,o) }catch(t){ e(t) } }() }); </script><div hidden>
+<h2 class="sr-only">Templates (for web app):</h2>
+<template id="_animation-template"><div class="animation-main fixed-top">
+<nav id="breadcrumbs" class="screen-only"><ul></ul></nav><div class="content"><div class="page"></div></div>
+</div></template> <template id="_loading-template"><div class="loading nav-btn fr"> <span class="sr-only">Loading…</span> <span class="icon-cog"></span>
+</div></template> <template id="_error-template"><div class="page">
+<h1 class="page-title">Error</h1>
+<p class="lead"> Sorry, an error occurred while loading <a class="this-link" href=""></a>.</p>
+</div></template> <template id="_permalink-template"> <a href="#" class="permalink"> <span class="sr-only">Permalink</span> <span class="content-hash"></span> </a> </template> <template id="_dark-mode-template"> <button id="_dark-mode" class="nav-btn no-hover"> <span class="sr-only">Dark Mode</span> <span class="icon-brightness-contrast"></span> </button> </template> <template id="_search-template"> <button id="_search" class="nav-btn no-hover"> <label class="sr-only" for="_search-input">Search</label> <span class="icon-search"></span> </button><div id="_search-box">
+<div class="nav-btn"> <span class="icon-search"></span>
+</div>
+<input id="_search-input" type="search" class="form-control form-control-lg nav-btn" placeholder="Type something…"> <button type="reset" class="nav-btn no-hover"> <span class="sr-only">Close</span> <span class="icon-cross"></span> </button>
+</div>
+<div id="_hits"></div></template>
+</div>
+</body>
+</html>

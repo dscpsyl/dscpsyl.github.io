@@ -1,0 +1,1238 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://www.printhello.world/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.printhello.world/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-11-11T02:09:28+00:00</updated><id>https://www.printhello.world/feed.xml</id><title type="html">David Jr Sim</title><subtitle>David Jr Sim is a computer scientist, researcher, and nerd based out of Los Angeles California.
+</subtitle><author><name>David Jr Sim</name><email>dsim@cs.ucsb.edu</email></author><entry><title type="html">Port My Environment</title><link href="https://www.printhello.world/blog/2025-07-27-port-my-env/" rel="alternate" type="text/html" title="Port My Environment" /><published>2025-07-27T00:00:00+00:00</published><updated>2025-11-11T02:02:28+00:00</updated><id>https://www.printhello.world/blog/port-my-env</id><content type="html" xml:base="https://www.printhello.world/blog/2025-07-27-port-my-env/"><![CDATA[<p>I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.</p>
+
+<ol id="markdown-toc">
+  <li><a href="#vbox" id="markdown-toc-vbox">VBox</a>    <ol>
+      <li><a href="#the-testing-workflow" id="markdown-toc-the-testing-workflow">The Testing Workflow</a></li>
+    </ol>
+  </li>
+  <li><a href="#the-script" id="markdown-toc-the-script">The Script</a>    <ol>
+      <li><a href="#prerequisite" id="markdown-toc-prerequisite">Prerequisite</a>        <ol>
+          <li><a href="#let-the-managers-manage" id="markdown-toc-let-the-managers-manage">Let the Managers Manage</a></li>
+        </ol>
+      </li>
+      <li><a href="#subroutines" id="markdown-toc-subroutines">Subroutines</a>        <ol>
+          <li><a href="#installers" id="markdown-toc-installers">Installers</a>            <ol>
+              <li><a href="#macos" id="markdown-toc-macos">MacOS</a></li>
+              <li><a href="#linux" id="markdown-toc-linux">Linux</a></li>
+              <li><a href="#extendable" id="markdown-toc-extendable">Extendable</a></li>
+            </ol>
+          </li>
+          <li><a href="#toml-helper" id="markdown-toc-toml-helper">TOML Helper</a></li>
+          <li><a href="#transitions" id="markdown-toc-transitions">Transitions</a></li>
+          <li><a href="#basic-printing" id="markdown-toc-basic-printing">Basic Printing</a></li>
+          <li><a href="#user-interaction" id="markdown-toc-user-interaction">User Interaction</a></li>
+          <li><a href="#logging" id="markdown-toc-logging">Logging</a></li>
+        </ol>
+      </li>
+      <li><a href="#setup" id="markdown-toc-setup">Setup</a>        <ol>
+          <li><a href="#os-detection" id="markdown-toc-os-detection">OS Detection</a></li>
+          <li><a href="#pretty-print" id="markdown-toc-pretty-print">Pretty Print</a></li>
+        </ol>
+      </li>
+      <li><a href="#main" id="markdown-toc-main">Main</a>        <ol>
+          <li><a href="#git--ssh" id="markdown-toc-git--ssh">Git &amp; SSH</a></li>
+          <li><a href="#main-package-manager" id="markdown-toc-main-package-manager">Main Package Manager</a></li>
+          <li><a href="#zsh" id="markdown-toc-zsh">ZSH</a></li>
+          <li><a href="#nodejs" id="markdown-toc-nodejs">NodeJS</a></li>
+          <li><a href="#rush" id="markdown-toc-rush">Rush</a></li>
+          <li><a href="#python" id="markdown-toc-python">Python</a></li>
+          <li><a href="#make" id="markdown-toc-make">Make</a></li>
+          <li><a href="#macos-defaults" id="markdown-toc-macos-defaults">MacOS Defaults</a></li>
+          <li><a href="#tmux" id="markdown-toc-tmux">Tmux</a></li>
+          <li><a href="#resh" id="markdown-toc-resh">RESH</a></li>
+          <li><a href="#chruby" id="markdown-toc-chruby">Chruby</a></li>
+          <li><a href="#chezmoi" id="markdown-toc-chezmoi">Chezmoi</a></li>
+          <li><a href="#homebrew" id="markdown-toc-homebrew">Homebrew</a></li>
+        </ol>
+      </li>
+      <li><a href="#cleanup" id="markdown-toc-cleanup">Cleanup</a></li>
+    </ol>
+  </li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ol>
+
+<h2 id="vbox">VBox</h2>
+
+<p>It is in these low-level projects that the power of virtualization really shines. From the start of my coding days, my goto solution has been <a href="https://www.virtualbox.org/">Oracle’s VirtualBox</a>. It is free, open-source, cross-platform, and without any bloat. Critically, for me, it is compatible with my M-series MacBook.</p>
+
+<p>As I refuse to do anything in Powershell, this script will assume I have not lost my mind and am in a Unix environment. Because I like jellyfishes, I am using Ubuntu as my base OS for this project. However, the script will extend to the other major distributions, including MacOS. Using the ISO, I set up a basic installation of Ubuntu with a shared folder to my host machine. This is now my base image that I will copy for each iteration and test for my script.</p>
+
+<h3 id="the-testing-workflow">The Testing Workflow</h3>
+
+<p>With my CD/CI pipeline set up, I can now focus on the actual developonment of the script. My testing workflow is now as follows:</p>
+
+<ol>
+  <li>Make sure the current version of the script is in the shared folder.</li>
+  <li>Spin up a copy of the base image.</li>
+  <li>Test the script.</li>
+  <li>Rinse and repeat.</li>
+</ol>
+
+<p>It cannot get any simpler. No more setting up fresh environments or worries of contamination from previous tests. Once I have my script in an acceptable state, I can adjust the base image to other distributions and test again.</p>
+
+<h2 id="the-script">The Script</h2>
+
+<p>For the sake of universality, I have sacrilegiously chosen <code class="language-plaintext highlighter-rouge">bash</code> as the language. As such we must chant the spell at the beginning that will protect us from its curses:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+</code></pre></div></div>
+
+<h3 id="prerequisite">Prerequisite</h3>
+
+<p>Before touching the script, you need a list of the packages you want to install. It doesn’t have to be exhaustive, but it should cover the essentials and get your environment to a comfortable state.</p>
+
+<h4 id="let-the-managers-manage">Let the Managers Manage</h4>
+
+<p>There are countless package managers nowadays with robust features. Why reinvent the wheel? If the package manager can handle you dependencies, then let it. If it doesn’t need a standalone installation, don’t make it harder than it needs to be. This script is designed to leverage package managers to do the heavy lifting, so install all the managers you’ll need.</p>
+
+<p class="note" title="Note">As my version of the script relies on these managers, if you choose to not install them, the script will simply exit.</p>
+
+<h3 id="subroutines">Subroutines</h3>
+
+<p>Finally, with the planning phase out of the way, let’s get into the meat of the script. We will set ourselves up for success by defining the most common subroutines we will need for each installation.</p>
+
+<h4 id="installers">Installers</h4>
+
+<p>As we focus on Unix systems, we will look at the two routines we’ll need: Linux and MacOS.</p>
+
+<h5 id="macos">MacOS</h5>
+
+<p>As MacOS’s most popular, and arguably only, package manager is Homebrew, we will define a subroutine to install packages through it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__macInstall<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+
+	brew <span class="nb">install</span> <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h5 id="linux">Linux</h5>
+
+<p>For Linux, we will prioritze <code class="language-plaintext highlighter-rouge">snap</code> as the primary package manager, with the distribution’s native package manager as a backup. If it is a <code class="language-plaintext highlighter-rouge">classic snap</code> app, we will also have to specify it during the install command. Here, we choose the four horsemen of distributions to support: Debian-based (<code class="language-plaintext highlighter-rouge">apt</code>), RedHat-based (<code class="language-plaintext highlighter-rouge">dnf</code>), Arch-based (<code class="language-plaintext highlighter-rouge">pacman</code>), and Fedora-based (<code class="language-plaintext highlighter-rouge">yum</code>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__linuxInstall<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">snap_classic</span><span class="o">=</span><span class="k">${</span><span class="nv">2</span><span class="p">-</span><span class="s2">""</span><span class="k">}</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> snap<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		if</span> <span class="o">[[</span> <span class="si">$(</span>snap find <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-c</span> <span class="s2">"^</span><span class="nv">$app</span><span class="s2"> "</span><span class="si">)</span> <span class="nt">-gt</span> 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sudo </span>snap <span class="nb">install</span> <span class="nv">$app</span> <span class="nv">$snap_classic</span><span class="p">;</span>
+			<span class="k">return </span>0<span class="p">;</span>
+		<span class="k">fi
+	fi
+
+	if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> apt<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Debian/Ubuntu</span>
+        <span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> dnf<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># RedHat</span>
+        <span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> yum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Fedora</span>
+        <span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> pacman<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># Arch</span>
+        <span class="nb">sudo </span>pacman <span class="nb">install</span> <span class="nt">-y</span> <span class="nv">$app</span><span class="p">;</span>
+        <span class="k">return </span>0<span class="p">;</span>
+    <span class="k">else
+        </span><span class="nb">echo</span> <span class="s2">"ERROR::Unsupported Linux distribution. Please install </span><span class="nv">$app</span><span class="s2"> manually."</span> <span class="o">&gt;</span>&amp;2<span class="p">;</span>
+        <span class="nb">exit </span>2<span class="p">;</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h5 id="extendable">Extendable</h5>
+
+<p>To promote extensibility, you can easily add more subroutines for other operating systems or package managers as needed. When such new subroutines are added, you can simply add them as an option to the wrapper subroutine below that will call the appropriate installer based on the detected OS.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_install_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">app</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">snap_classic</span><span class="o">=</span><span class="k">${</span><span class="nv">2</span><span class="p">-</span><span class="s2">""</span><span class="k">}</span><span class="p">;</span>
+
+	<span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in
+		</span>linux<span class="k">*</span><span class="p">)</span>
+			__linuxInstall <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$snap_classic</span><span class="s2">"</span>
+			<span class="p">;;</span>
+	    darwin<span class="k">*</span><span class="p">)</span>
+			__macInstall <span class="s2">"</span><span class="nv">$app</span><span class="s2">"</span>
+			<span class="p">;;</span>
+	<span class="k">esac</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="toml-helper">TOML Helper</h4>
+
+<p>For one of my packages (Chezmoi), I will need to do work with TOML, and I will need to check for specific settings.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__tomlLineExists<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">line</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">section</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">file</span><span class="o">=</span><span class="s2">"</span><span class="nv">$3</span><span class="s2">"</span><span class="p">;</span>
+
+	<span class="nb">awk</span> <span class="nt">-v</span> <span class="nv">section</span><span class="o">=</span><span class="s2">"</span><span class="nv">$section</span><span class="s2">"</span> <span class="nt">-v</span> <span class="nv">line</span><span class="o">=</span><span class="s2">"</span><span class="nv">$line</span><span class="s2">"</span> <span class="s1">'
+		$0 == section { in_section=1 }
+        in_section &amp;&amp; $0 == line { found=1; exit }
+        END { exit !found }
+	'</span> <span class="s2">"</span><span class="nv">$file</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="transitions">Transitions</h4>
+
+<p>I want this script to be pretty. As such, I’ve used <a href="https://github.com/charmbracelet/gum">gum</a> to handle user interactions and display messages. This subroutine will help with transitions between different states in the script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_transition_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum spin <span class="nt">--spinner</span> line <span class="nt">--title</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">..."</span> <span class="nt">--</span> <span class="nb">sleep </span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">..."</span><span class="p">;</span>
+		<span class="nb">sleep </span>1<span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="basic-printing">Basic Printing</h4>
+
+<p>Of course, the pretty prints and UIs are not required. For those that cannot handle the extra weight, we will simply use <code class="language-plaintext highlighter-rouge">stdout</code> and these subroutines to print messages. Additionally, when the script is first starting up, it will not have the ability to pretty print, so these subroutines will be used there as well.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="s2">"# </span><span class="nv">$text</span><span class="s2">"</span> | gum format <span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+
+_print_header_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum style <span class="se">\</span>
+				<span class="nt">--foreground</span> 212 <span class="nt">--border-foreground</span> 91 <span class="nt">--border</span> double <span class="se">\</span>
+				<span class="nt">--align</span> center <span class="nt">--width</span> 50 <span class="nt">--margin</span> <span class="s2">"1 2"</span> <span class="nt">--padding</span> <span class="s2">"2 4"</span> <span class="se">\</span>
+				<span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"##########~</span><span class="nv">$text</span><span class="s2">~##########"</span><span class="p">;</span>
+		<span class="nb">echo</span> <span class="s2">"##################################################"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+
+_end_<span class="o">()</span> <span class="o">{</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>clear <span class="nt">-x</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"##################################################"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="user-interaction">User Interaction</h4>
+
+<p>We will need the user to input and confirm certain actions as this is an interactive script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_confirm_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">prompt</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		if </span>gum confirm <span class="s2">"</span><span class="nv">$prompt</span><span class="s2">"</span><span class="p">;</span> <span class="k">then
+			return </span>0<span class="p">;</span>
+		<span class="k">else
+			return </span>1<span class="p">;</span>
+		<span class="k">fi
+	else
+		</span><span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$prompt</span><span class="s2"> (y/n) "</span> promptChoice<span class="p">;</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="k">${</span><span class="nv">promptChoice</span><span class="p">,,</span><span class="k">}</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"y"</span> <span class="o">||</span> <span class="s2">"</span><span class="k">${</span><span class="nv">promptChoice</span><span class="p">,,</span><span class="k">}</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"yes"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			return </span>0<span class="p">;</span>
+		<span class="k">else
+			return </span>1<span class="p">;</span>
+		<span class="k">fi
+	fi</span>
+<span class="o">}</span>
+
+_input_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">placeholder</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="si">$(</span>gum input <span class="nt">--placeholder</span><span class="o">=</span><span class="s2">"</span><span class="nv">$placeholder</span><span class="s2">"</span><span class="si">)</span>
+	<span class="k">else
+		</span><span class="nb">read</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$placeholder</span><span class="s2">: "</span> out<span class="p">;</span>
+		<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="logging">Logging</h4>
+
+<p>As with all good scripts, we will want to log what is and has had happened in the script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_log_<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">local </span><span class="nv">level</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+	<span class="nb">local </span><span class="nv">text</span><span class="o">=</span><span class="nv">$2</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>gum log <span class="nt">--prefix</span><span class="o">=</span><span class="s2">"[Port-My-Env]"</span> <span class="nt">--structured</span> <span class="nt">--time</span><span class="o">=</span>RFC850 <span class="nt">--level</span><span class="o">=</span><span class="nv">$level</span> <span class="s2">"</span><span class="nv">$text</span><span class="s2">"</span> <span class="nt">--file</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/port-my-env.log"</span><span class="p">;</span>
+	<span class="k">else
+		</span><span class="nb">echo</span> <span class="s2">"[Port-My-Env] </span><span class="si">$(</span><span class="nb">date</span> +%Y/%m/%d-%H:%M:%S<span class="si">)</span><span class="s2"> (</span><span class="nv">$level</span><span class="s2">) </span><span class="nv">$text</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/port-my-env.log"</span><span class="p">;</span>
+	<span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="setup">Setup</h3>
+
+<p>With all the subroutines defined, we can now do some quick housekeeping. Mainly, we need to check the OS compatibility and whether or not we will be using pretty printing.</p>
+
+<h4 id="os-detection">OS Detection</h4>
+
+<p>First thing’s first, we need to detect the OS. This will determine the packages, package managers, and other configurations needed. It will also exit the script immediately if the OS is unsupported. We will inform the user, log it, and finally start the script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="s2">"</span><span class="nv">$OSTYPE</span><span class="s2">"</span> <span class="k">in
+	</span>linux<span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"linux"</span>
+		<span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> /etc/lsb-release <span class="nt">-o</span> <span class="nt">-d</span> /etc/lsb-release.d <span class="o">]</span><span class="p">;</span> <span class="k">then</span> <span class="c"># If available, use LSB to identify distribution</span>
+    		<span class="nb">export </span><span class="nv">DISTRO</span><span class="o">=</span><span class="si">$(</span>lsb_release <span class="nt">-i</span> | <span class="nb">cut</span> <span class="nt">-d</span>: <span class="nt">-f2</span> | <span class="nb">sed </span>s/<span class="s1">'^\t'</span>//<span class="si">)</span>
+		<span class="k">else</span> <span class="c"># Otherwise, use release info file</span>
+    		<span class="nb">export </span><span class="nv">DISTRO</span><span class="o">=</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-d</span> /etc/[A-Za-z]<span class="k">*</span><span class="o">[</span>_-][rv]e[lr]<span class="k">*</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"lsb"</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'/'</span> <span class="nt">-f3</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'-'</span> <span class="nt">-f1</span> | <span class="nb">cut</span> <span class="nt">-d</span><span class="s1">'_'</span> <span class="nt">-f1</span><span class="si">)</span>
+		<span class="k">fi</span>
+		<span class="p">;;</span>
+    darwin<span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"mac"</span>
+		<span class="p">;;</span>
+    <span class="k">*</span><span class="p">)</span>
+		<span class="nv">osName</span><span class="o">=</span><span class="s2">"__invalid__"</span>
+		<span class="p">;;</span>
+<span class="k">esac</span>
+
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"__invalid__"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ ERROR::This script is only intended <span class="k">for </span>UNIX devices.<span class="p">;</span>
+	<span class="nb">exit </span>1<span class="p">;</span>
+<span class="k">fi
+
+</span>_print_ <span class="s2">"We have detected that you are on a </span><span class="nv">$osName</span><span class="s2"> device."</span><span class="p">;</span>
+_log_ <span class="s2">"info"</span> <span class="s2">"Detected linux distro: </span><span class="nv">$DISTRO</span><span class="s2">"</span><span class="p">;</span>
+_log_ <span class="s2">"debug"</span> <span class="s2">"Starting script..."</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="pretty-print">Pretty Print</h4>
+
+<p>As this script uses <code class="language-plaintext highlighter-rouge">gum</code> for pretty printing and user interaction, we will need to check if it is installed. If not, we will offer to install it for the user. If the user declines, we will proceed without pretty printing. Otherwise, <code class="language-plaintext highlighter-rouge">gum</code> has specific installation instructions based on the OS, so we will follow those and set the pretty print flag accordingly.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+<span class="nb">export </span>prettyPrint<span class="p">;</span>
+
+_print_header_ <span class="s2">"Step 0"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> gum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"This script has the ability to be interactive in a pretty way."</span><span class="p">;</span>
+	_print_ <span class="s2">"It will use gum (https://github.com/charmbracelet/gum</span><span class="se">\)</span><span class="s2"> as the prettifier."</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install and use gum?"</span><span class="p">;</span> <span class="k">then</span>
+		<span class="c"># For Linux gum install</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"linux"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    		<span class="c"># Check for Ubuntu and install</span>
+    		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$DISTRO</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"Ubuntu"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    			if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> gum<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    				</span>_print_ <span class="s2">"You are on a linux distro that this script cannot automatically install gum for you."</span><span class="p">;</span>
+    				_print_ <span class="s2">"Please see the Github page and install manually and then rerun the script."</span><span class="p">;</span>
+    				<span class="nb">exit </span>0<span class="p">;</span>
+    			<span class="k">fi
+    		else
+    			</span><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/apt/keyrings<span class="p">;</span>
+				curl <span class="nt">-fsSL</span> https://repo.charm.sh/apt/gpg.key | <span class="nb">sudo </span>gpg <span class="nt">--dearmor</span> <span class="nt">-o</span> /etc/apt/keyrings/charm.gpg<span class="p">;</span>
+				<span class="nb">echo</span> <span class="s2">"deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/charm.list<span class="p">;</span>
+				<span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install </span>gum<span class="p">;</span>
+				_log_ <span class="s2">"info"</span> <span class="s2">"Autoinstalled gum via this script."</span><span class="p">;</span>
+    		<span class="k">fi
+		fi</span>
+
+		<span class="c"># For Mac gum install</span>
+		<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"Gum will be installed via Homebrew and will be deleted afterwards (if you so choose)."</span><span class="p">;</span>
+			_print_ <span class="s2">"If you have not installed Homebrew and do not want Homebrew, do not use pretty print on MacOS."</span><span class="p">;</span>
+			_input_ <span class="s2">"Press [ENTER] to continue or CTRL+C to exit."</span><span class="p">;</span>
+			<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> brew<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+				</span><span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  				<span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>/opt/homebrew/bin/brew shellenv<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  			<span class="k">fi
+  			</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1 brew <span class="nb">install </span>gum<span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Autoinstalled gum via this script."</span><span class="p">;</span>
+		<span class="k">fi
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">fi
+else
+	if </span>_confirm_ <span class="s2">"Gum has been detected on your computer. Would you like to use it for pretty print?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>1<span class="p">;</span>
+	<span class="k">else
+		</span><span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">fi
+fi
+
+if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>gum spin <span class="nt">--spinner</span> line <span class="nt">--title</span> <span class="s2">"Gum is being used! You should see a spinner..."</span> <span class="nt">--</span> <span class="nb">sleep </span>1<span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Using pretty printing."</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"No pretty printing today..."</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"No pretty printing today."</span>
+	_end_<span class="p">;</span>
+	<span class="nb">sleep </span>1<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<h3 id="main">Main</h3>
+
+<p>Now the moment you’ve been waiting for: let’s get to the main script.</p>
+
+<h4 id="git--ssh">Git &amp; SSH</h4>
+
+<p>Like with a goods things in life, it is never complete without Git and SSH. With that, these will be the first things to set up. Due to the sensitive nature of these two tools, we will not automate their setup, but rather simply remind the user to have them installed and configured.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"New System Environment Porting Script"</span><span class="p">;</span>
+_print_ <span class="s2">"Please make sure that you have SSH and Git installed and enough configured that you can clone your private Github repos (i.e., with usable keys)."</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Are you ready to continue?"</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Please rerun the script once yo've set both of them up!"</span><span class="p">;</span>
+	_end_<span class="p">;</span>
+	<span class="nb">exit </span>1<span class="p">;</span>
+<span class="k">fi
+</span>_log_ <span class="s2">"info"</span> <span class="s2">"SSH and Git configuration confirmed"</span><span class="p">;</span>
+
+<span class="nv">GITHUB_USERNAME</span><span class="o">=</span><span class="s2">"dscpsyl"</span>
+<span class="nv">GITHUB_DOTS_REPO</span><span class="o">=</span><span class="s2">"dotfiles"</span>
+_print_ <span class="s2">"This script has your Github username as </span><span class="nv">$GITHUB_USERNAME</span><span class="s2"> and your dotfiles repo as </span><span class="nv">$GITHUB_DOTS_REPO</span><span class="s2">."</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Are these values correct?"</span><span class="p">;</span> <span class="k">then
+	</span><span class="nv">GITHUB_USERNAME</span><span class="o">=</span><span class="si">$(</span>_input_ <span class="s2">"Please type the correct Github Username..."</span><span class="si">)</span><span class="p">;</span>
+	<span class="nv">GITHUB_DOTS_REPO</span><span class="o">=</span><span class="si">$(</span>_input_ <span class="s2">"Please type the correct Github Repo Name..."</span><span class="si">)</span><span class="p">;</span>
+<span class="k">fi
+</span>_log_ <span class="s2">"info"</span> <span class="s2">"Using Github username </span><span class="nv">$GITHUB_USERNAME</span><span class="s2"> and gitub dotfiles repo name </span><span class="nv">$GITHUB_DOTS_REPO</span><span class="s2">"</span><span class="p">;</span>
+_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="main-package-manager">Main Package Manager</h4>
+
+<p>Now, we want to setup the main installer for all of our packages. On linux, we will ask if the user wants to autoupdate packages, and then ask to install <code class="language-plaintext highlighter-rouge">snap</code>. Both of these are optional, as we will already have the distro’s built-in manager, but recommended. On MacOS, we will ask to install <code class="language-plaintext highlighter-rouge">homebrew</code>. If this is declined, we will exit the script since MacOS has nothing else as popular.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Package Manager"</span>
+
+<span class="k">if </span>_confirm_ <span class="s2">"You are on a linux system. Would you like to auto-update installs?"</span><span class="p">;</span> <span class="k">then
+	</span><span class="nb">sudo </span>dpkg-reconfigure <span class="nt">--priority</span><span class="o">=</span>low unattended-upgrades<span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"DPKG auto update installed packages set"</span><span class="p">;</span>
+	_print_ <span class="s2">"DPKG setting set!"</span><span class="p">;</span>
+<span class="k">else
+	</span>_log_ <span class="s2">"warn"</span> <span class="s2">"DPKG auto update installed packages skipped"</span><span class="p">;</span>
+	_print_ <span class="s2">"No auto updating packages. Got it!"</span><span class="p">;</span>
+<span class="k">fi
+
+if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"linux"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> snap<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Snap is not installed"</span>
+
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Snap now?"</span><span class="p">;</span> <span class="k">then
+			</span>_install_ snapd<span class="p">;</span>
+			<span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> snapd.socket<span class="p">;</span>
+			<span class="nb">sudo ln</span> <span class="nt">-s</span> /var/lib/snapd/snap /snap<span class="p">;</span>
+
+			_print_ <span class="s2">"Snap installed successfully!"</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Snap installed"</span><span class="p">;</span>
+  		<span class="k">else
+  			</span>_print_ <span class="s2">"Skipping Snap installation"</span><span class="p">;</span>
+  			_log_ <span class="s2">"warn"</span> <span class="s2">"Snap installation skipped"</span><span class="p">;</span>
+		<span class="k">fi
+
+	else
+		</span>_print_ <span class="s2">"Snap found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Snap is already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+
+if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> brew<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Homebrew is not installed"</span><span class="p">;</span>
+		
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Homebrew now?"</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"This script requires Homebrew on MacOS to function. Exiting..."</span><span class="p">;</span>
+			_log_ <span class="s2">"fatal"</span> <span class="s2">"Homebrew instillation request denied on MacOS"</span><span class="p">;</span>
+			<span class="nb">exit </span>1<span class="p">;</span>
+		<span class="k">fi
+
+		if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>gum spin <span class="nt">--spinner</span><span class="o">=</span>line <span class="nt">--show-output</span> <span class="nt">--</span> <span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  		<span class="k">else
+  			</span><span class="nv">NONINTERACTIVE</span><span class="o">=</span>1 /bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+  		<span class="k">fi
+  		</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">$(</span>/opt/homebrew/bin/brew shellenv<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+
+  		_print_ <span class="s2">"Homebrew installed successfully!"</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Homebrew installed"</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Homebrew found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Homebrew is already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="zsh">ZSH</h4>
+
+<p>I am a cult-bliever in <code class="language-plaintext highlighter-rouge">zsh</code> and <code class="language-plaintext highlighter-rouge">oh-my-zsh</code>. Thus, I have made these required in the script. To balance out this obsession, I have chosen to make making <code class="language-plaintext highlighter-rouge">zsh</code> the deault shell to be optional.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"ZSH Default Shell"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$SHELL</span><span class="s2">"</span> <span class="o">!=</span> <span class="s2">"/usr/bin/zsh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	if </span>_confirm_ <span class="s2">"Would you like to set ZSH as your default shell?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">USER</span><span class="o">=</span><span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span>
+		chsh <span class="nt">-s</span> <span class="si">$(</span>which zsh<span class="si">)</span> <span class="nv">$USER</span><span class="p">;</span>
+		_print_ <span class="s2">"ZSH set as default shell! You will be dropped into zsh the next time you log in."</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Default shell switched to ZSH."</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"We will ignore ZSH for now!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"ZSH default shell switch denied."</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"ZSH already default!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"ZSH is already the default shell."</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_print_header_ <span class="s2">"Oh-My-ZSH"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.oh-my-zsh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Oh-My-ZSH is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Oh-My-ZSH now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Oh-My-ZSH to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Oh-My-ZSH instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span><span class="nv">RUNZSH</span><span class="o">=</span>no sh <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="si">)</span><span class="s2">"</span><span class="p">;</span>
+
+	_print_ <span class="s2">"Oh-My-ZSH installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Oh-My-ZSH installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Oh-My-ZSH found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Oh-My-ZSH is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="nodejs">NodeJS</h4>
+
+<p>As much as I like to hate on <code class="language-plaintext highlighter-rouge">javascript</code>, there is no denying that I partake in its wine from time to time. Thus, I will need <code class="language-plaintext highlighter-rouge">nodejs</code> installed. I have chosen <code class="language-plaintext highlighter-rouge">nvm</code> as my gateway drug and it will be the required manager for <code class="language-plaintext highlighter-rouge">nodejs</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print_header_ <span class="s2">"NVM and NodeJS"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.nvm"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"NVM and NodeJS are not installed and are required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Would you like to install NVM (Node Version Manager) and NodeJS?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires NVM and NodeJS to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"NVM and NodeJS instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>curl <span class="nt">-o-</span> https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash<span class="p">;</span>
+	<span class="se">\.</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.nvm/nvm.sh"</span><span class="p">;</span>
+	nvm <span class="nb">install </span>node<span class="p">;</span>
+
+	_print_ <span class="s2">"NVM and NodeJS installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"NVM and NodeJS installed"</span><span class="p">;</span>
+<span class="k">else
+	if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> node<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"NVM has been found on the system but not Node."</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"NVM is already installed on this system"</span><span class="p">;</span>
+		<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Would you like to install NodeJS with NVM?"</span><span class="p">;</span> <span class="k">then
+			</span>_print_ <span class="s2">"This script requires NodeJS to function. Please manually install it. Exiting..."</span><span class="p">;</span>
+			_log_ <span class="s2">"fatal"</span> <span class="s2">"NodeJS instillation request denied"</span><span class="p">;</span>
+			<span class="nb">exit </span>1<span class="p">;</span>
+		<span class="k">fi
+		</span>nvm <span class="nb">install </span>node<span class="p">;</span>
+		_print_ <span class="s2">"NodeJS installed successfully!"</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"NodeJS installed"</span><span class="p">;</span>
+	<span class="k">else	
+		</span>_print_ <span class="s2">"NVM and NodeJS found!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"NVM and NodeJS are already installed on this system"</span><span class="p">;</span>
+	<span class="k">fi
+fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="rush">Rush</h4>
+
+<p>I think <code class="language-plaintext highlighter-rouge">rust</code> is fine. It has its quirks, but overall it’sa comfortable language to work with. With its popularity, many of the tools I use are written in <code class="language-plaintext highlighter-rouge">rust</code> and on <code class="language-plaintext highlighter-rouge">crates</code>. Thus, having <code class="language-plaintext highlighter-rouge">crates</code> is another necessity.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Ruby"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> ruby<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Ruby is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Ruby now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Ruby to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Ruby instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ ruby <span class="s2">"--classic"</span><span class="p">;</span>
+
+	_print_ <span class="s2">"Ruby installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Ruby installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Ruby found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Ruby is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="python">Python</h4>
+
+<p>Good old <code class="language-plaintext highlighter-rouge">python</code>. Love it. Nothing else to say here. Most of the time, it should already be installed, but just in case, we will check and install it if needed. While I like <code class="language-plaintext highlighter-rouge">pip</code> as much as the next guy, some tools are better off more standalone, so <code class="language-plaintext highlighter-rouge">pipx</code> it is.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Python3"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> python3<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Python3 is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install Python3 now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires Python3 to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"Python3 instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ python3<span class="p">;</span>
+
+	_print_ <span class="s2">"Python3 installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"Python3 installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"Python3 found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Python3 is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_print_header_ <span class="s2">"pipx"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> pipx<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"pipx is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install pipx now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires pipx to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"pipx instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ pipx<span class="p">;</span>
+	pipx ensurepath<span class="p">;</span>
+
+	_print_ <span class="s2">"pipx installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"pipx installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"pipx found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"pipx is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="make">Make</h4>
+
+<p>This should be on the system already, like <code class="language-plaintext highlighter-rouge">python</code>. It’s here more so as another just-in-case catch.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"make"</span><span class="p">;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> make<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"make is not installed and is required"</span><span class="p">;</span>
+	<span class="k">if</span> <span class="o">!</span> _confirm_ <span class="s2">"Do you want to install make now?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"This script requires make to function. Exiting..."</span><span class="p">;</span>
+		_log_ <span class="s2">"fatal"</span> <span class="s2">"make instillation request denied"</span><span class="p">;</span>
+		<span class="nb">exit </span>1<span class="p">;</span>
+	<span class="k">fi
+
+	</span>_install_ make<span class="p">;</span>
+
+	_print_ <span class="s2">"make installed successfully!"</span>
+  	_log_ <span class="s2">"info"</span> <span class="s2">"make installed"</span><span class="p">;</span>
+<span class="k">else
+	</span>_print_ <span class="s2">"make found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"make is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+
+_transition_ <span class="s2">"Prerequisites Sastified! Continuing"</span><span class="p">;</span>
+_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<p>You may have also noticed now that its starting to get pretty repetitive. I could wrap this structure up into another sobroutine for conciseness, but I was too lazy. You can make the change yourself, or just deal with it.</p>
+
+<h4 id="macos-defaults">MacOS Defaults</h4>
+
+<p>Now that the essential package managers are installed, let’s take a detour to MacOS land and apply my preferred defaults.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"MacOS Defaults"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to set the MacOS predefined defaults?"</span><span class="p">;</span> <span class="k">then
+		</span>_print_ <span class="s2">"Setting MacOS Dock Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.Dock autohide-delay <span class="nt">-float</span> 0<span class="p">;</span>
+		defaults write com.apple.dock expose-animation-duration <span class="nt">-float</span> 0.12<span class="p">;</span>
+		defaults write com.apple.Dock showhidden <span class="nt">-bool</span> YES<span class="p">;</span>
+		defaults write com.apple.dock expose-animation-duration <span class="nt">-float</span> 0<span class="p">;</span>
+		killall Dock<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Dock Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Finder Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.finder QLEnableTextSelection <span class="nt">-bool</span> TRUE<span class="p">;</span>
+		defaults write com.apple.finder AppleShowAllFiles <span class="nt">-bool</span> YES<span class="p">;</span>
+		defaults write com.apple.finder FXDefaultSearchScope <span class="nt">-string</span> <span class="s2">"SCcf"</span><span class="p">;</span>
+		killall Finder<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Finder Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS ScreenCapture Defaults..."</span><span class="p">;</span>
+		defaults write com.apple.screencapture location ~/Desktop<span class="p">;</span>
+		defaults write com.apple.screencapture <span class="nb">type </span>png <span class="o">&amp;&amp;</span> killall SystemUIServer<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS ScreenCapture Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting ~/Library/ noHidden Flag..."</span><span class="p">;</span>
+		chflags nohidden ~/Library/<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set ~/Library/ noHidden Flag"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS to show all extensions..."</span><span class="p">;</span>
+		defaults write <span class="nt">-g</span> AppleShowAllExtensions <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS to show all extensions"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS NSGlobalDomain Defaults..."</span><span class="p">;</span>
+		defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain PMPrintingExpandedStateForPrint <span class="nt">-bool</span> <span class="nb">true</span><span class="p">;</span>
+		defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 <span class="nt">-bool</span> truefloat 0.05<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS NSGlobalDomain Defaults"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Subpixel Anti-Aliasing (Font Smoothing)..."</span>
+		defaults write <span class="nt">-g</span> CGFontRenderingFontSmoothingDisabled <span class="nt">-bool</span> <span class="nb">false</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Subpixel Anti-Aliasing"</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Setting MacOS Focus Follows Mouse in Terminal..."</span>
+		defaults write com.apple.Terminal FocusFollowsMouse <span class="nt">-string</span> YES<span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Set MacOS Focus Follows Mouse in Terminal"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<h4 id="tmux">Tmux</h4>
+
+<p>I am a <code class="language-plaintext highlighter-rouge">tmux</code> man. It was my first multiplexer and my home. Are there better options? Maybe; I would argue not. Are there quirks and annoyances? Of course. But it is reliable and has never failed me, unlike other multiplexers. It is not a requirement here, but I will always press yes.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Tmux"</span><span class="p">;</span> <span class="c"># (https://github.com/tmux/tmux)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> tmux<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Tmux is not installed"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Do you want to install Tmux now?"</span><span class="p">;</span> <span class="k">then
+		
+		</span>_install_ tmux<span class="p">;</span>
+
+		_print_ <span class="s2">"Tmux installed successfully!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Tmux installed"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Who needs panels anyways!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Tmux installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"Tmux found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"Tmux is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="resh">RESH</h4>
+
+<p>I’ve always found the basic shell history lacking. As such, here is my preferred shell history plugin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"RESH (Rich Enhanced Shell History)"</span><span class="p">;</span> <span class="c"># (https://github.com/curusarn/resh)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.resh"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"RESH is not installed"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install RESH (Rich Enhanced Shell History) and set keybindings?"</span><span class="p">;</span> <span class="k">then
+		
+		if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			if </span>_confirm_ <span class="s2">"This will also install coreutils on this Mac. Are you sure?"</span><span class="p">;</span> <span class="k">then
+				</span>brew <span class="nb">install </span>coreutils<span class="p">;</span>
+				curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/curusarn/resh/master/scripts/rawinstall.sh | bash<span class="p">;</span>
+				_print_ <span class="s2">"RESH installed successfully!"</span><span class="p">;</span>
+  				_log_ <span class="s2">"info"</span> <span class="s2">"RESH installed"</span><span class="p">;</span>
+  			<span class="k">else
+  				</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+				_log_ <span class="s2">"warn"</span> <span class="s2">"RESH installation denied"</span><span class="p">;</span>
+			<span class="k">fi
+		else
+			</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/curusarn/resh/master/scripts/rawinstall.sh | bash<span class="p">;</span>
+			_print_ <span class="s2">"RESH installed successfully!"</span><span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"RESH installed"</span><span class="p">;</span>
+		<span class="k">fi
+	else
+		</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"RESH installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"RESH found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"RESH is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="chruby">Chruby</h4>
+
+<p>I don’t often work with <code class="language-plaintext highlighter-rouge">ruby</code>, but when I do, I am alwasy on the wrong version.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_print_header_ <span class="s2">"Chruby"</span><span class="p">;</span> <span class="c"># (https://github.com/postmodern/chruby)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">"/usr/local/share/chruby"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Chruby is not installed on this system and is used in ~/.zshrc."</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install Chruby (Ruby Version Manager)?"</span><span class="p">;</span> <span class="k">then
+		</span><span class="nv">latestChruby</span><span class="o">=</span><span class="si">$(</span>curl <span class="nt">-s</span> https://api.github.com/repos/postmodern/chruby/releases/latest<span class="si">)</span><span class="p">;</span>
+		<span class="nv">vChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$latestChruby</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'"tag_name": "\K[^"]+'</span><span class="si">)</span><span class="p">;</span>
+		<span class="nv">urlChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$latestChruby</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-oP</span> <span class="s1">'"tarball_url": "\K[^"]+'</span><span class="si">)</span><span class="p">;</span>
+
+		curl <span class="nt">-L</span> <span class="nt">-o</span> chruby-latest.tar.gz <span class="s2">"</span><span class="nv">$urlChurby</span><span class="s2">"</span> &amp;&gt;/dev/null<span class="p">;</span>
+		<span class="nb">tar</span> <span class="nt">-xzf</span> chruby-latest.tar.gz<span class="p">;</span>
+		<span class="nv">repoChurby</span><span class="o">=</span><span class="si">$(</span><span class="nb">tar</span> <span class="nt">-tzf</span> chruby-latest.tar.gz | <span class="nb">awk</span> <span class="s1">'NR==1 {print $1}'</span><span class="si">)</span><span class="p">;</span>
+		<span class="nb">cd</span> <span class="s2">"</span><span class="nv">$repoChurby</span><span class="s2">"</span><span class="p">;</span>
+		<span class="nb">sudo</span> ./scripts/setup.sh<span class="p">;</span>
+
+		<span class="nb">cd</span> ..<span class="p">;</span>
+		<span class="nb">rm</span> <span class="nt">-r</span> <span class="s2">"</span><span class="nv">$repoChurby</span><span class="s2">"</span> chruby-latest.tar.gz<span class="p">;</span>
+
+		_print_ <span class="s2">"Chruby installed successfully!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Chruby installed"</span><span class="p">;</span>
+	
+	<span class="k">else
+		</span>_print_ <span class="s2">"No worries!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"chruby installation denied"</span><span class="p">;</span>
+	<span class="k">fi
+else
+	</span>_print_ <span class="s2">"chruby found!"</span><span class="p">;</span>
+	_log_ <span class="s2">"info"</span> <span class="s2">"chruby is already installed on this system"</span><span class="p">;</span>
+<span class="k">fi
+</span>_end_<span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="chezmoi">Chezmoi</h4>
+
+<p>To tie all of these tools together, I have my dotfiles saved and managed with <code class="language-plaintext highlighter-rouge">chezmoi</code>. Of course, it doesn’t need to be installed if I need a more simple and vanilla setup. But here we will install it, configure it, and apply the dotfiles to all these environment tools. Here, we will use the info of <code class="language-plaintext highlighter-rouge">git</code> and <code class="language-plaintext highlighter-rouge">ssh</code> from the beginning of the script. It all comes full circle.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="si">$(</span><span class="nb">command</span> <span class="nt">-v</span> chezmoi<span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Dots and Files"</span><span class="p">;</span>
+	_print_ <span class="s2">"Chezmoi has been found on your system"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to pull all your dotfiles from your dotfiles repo?"</span><span class="p">;</span> <span class="k">then
+		if</span> <span class="o">[[</span> <span class="nt">-z</span> <span class="si">$(</span><span class="nb">ls</span> <span class="nt">-A</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.local/share/chezmoi"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span>chezmoi init <span class="nt">--apply</span> git@github.com:<span class="nv">$GITHUB_USERNAME</span>/<span class="nv">$GITHUB_DOTS_REPO</span>.git<span class="p">;</span>
+			chezmoi apply<span class="p">;</span>
+			
+			_print_ <span class="s2">"Dotfiles applied!"</span><span class="p">;</span>
+  			_log_ <span class="s2">"info"</span> <span class="s2">"Dotfiles migrated to this machine"</span><span class="p">;</span>
+		<span class="k">else
+			</span>_print_ <span class="s2">"There seems to be an instance of Chezmoi here already. We will not init or apply anything for safety."</span>
+			_log_ <span class="s2">"error"</span> <span class="s2">"Existing instance of Chezmoi present"</span>
+		<span class="k">fi
+	else
+		</span>_print_ <span class="s2">"No dotfiles will be here!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Dotfile migration denied"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi
+
+if</span> <span class="o">[[</span> <span class="nt">-e</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Chezmoi Auto Update Dotfiles"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to update your Chezmoi config file to auto commit and push newly applied changes?"</span><span class="p">;</span> <span class="k">then		
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span><span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"^[git]$"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">[git]"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span>__tomlLineExists <span class="s2">"autoCommit = true"</span> <span class="s2">"[git]"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"/^[git]</span><span class="se">\$</span><span class="s2">/a autoCommit = true"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+	
+		if</span> <span class="o">[[</span> <span class="o">!</span> <span class="si">$(</span>__tomlLineExists <span class="s2">"autoPush = true"</span> <span class="s2">"[git]"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="si">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+			</span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"/^[git]</span><span class="se">\$</span><span class="s2">/a autoPush = true"</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/chezmoi/chezmoi.toml"</span><span class="p">;</span>
+		<span class="k">fi
+
+		</span>_print_ <span class="s2">"Chezmoi updated to autoupdate dotfile changes!"</span><span class="p">;</span>
+		_log_ <span class="s2">"info"</span> <span class="s2">"Chezmoi auto-update of dotfiles config applied"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"Make sure to manually apply changes in the future!"</span><span class="p">;</span>
+		_log_ <span class="s2">"warn"</span> <span class="s2">"Chezmoi auto-update of dotfiles denied"</span><span class="p">;</span>
+	<span class="k">fi
+	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<h4 id="homebrew">Homebrew</h4>
+
+<p>You didn’t think I’d forgotten about <code class="language-plaintext highlighter-rouge">homebrew</code>, did you? Of course not. <code class="language-plaintext highlighter-rouge">homerew</code> stores its info in a <code class="language-plaintext highlighter-rouge">brewfile</code>, which is in my <code class="language-plaintext highlighter-rouge">dotfiles</code> repo. Thus, we will how apply this file to install all the pachages I need on MacOS.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_header_ <span class="s2">"Homebrew Programs"</span><span class="p">;</span>
+	<span class="k">if </span>_confirm_ <span class="s2">"Would you like to install the MacOS predefined Homebrew applications from the Brewfile in your home directory?"</span><span class="p">;</span> <span class="k">then
+		</span>brew bundle <span class="nb">install</span><span class="p">;</span>
+
+		_print_ <span class="s2">"Brewfile taps and casks installed!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Brewfile items installed on this Mac"</span><span class="p">;</span>
+	<span class="k">else
+		</span>_print_ <span class="s2">"It's a clean slate!"</span><span class="p">;</span>
+  		_log_ <span class="s2">"info"</span> <span class="s2">"Brewfile not auto-installed on this Mac"</span><span class="p">;</span>
+  	<span class="k">fi
+  	</span>_end_<span class="p">;</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<h3 id="cleanup">Cleanup</h3>
+
+<p>And that’s it! This is my version of the script, but please feel free to copy and adapt it to your own needs. You can find the full version <a href="https://gist.github.com/dscpsyl/91cdda5076efa3e20f3a5216426de4fb">here</a>. Before we termiante, let’s quickly cleanup <code class="language-plaintext highlighter-rouge">gum</code>, which we installed only for pretty printing.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[[</span> <span class="nv">$prettyPrint</span> <span class="o">==</span> 1 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span>_print_ <span class="s2">"Uninstalling gum"</span>
+	<span class="nv">prettyPrint</span><span class="o">=</span>0<span class="p">;</span>
+	<span class="k">if</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$osName</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"mac"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span>brew uninstall gum<span class="p">;</span>
+	<span class="k">elif</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$DISTRO</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"Ubuntu"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">sudo </span>apt-get <span class="nt">-y</span> purge gum<span class="p">;</span>
+		<span class="nb">sudo rm</span> /etc/apt/sources.list.d/charm.list<span class="p">;</span>
+		<span class="nb">sudo rm</span> /etc/apt/keyrings/charm.gpg<span class="p">;</span>
+	<span class="k">fi
+fi</span>
+</code></pre></div></div>
+
+<p>Finally, we will display some helpful reminders to the user before closing.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to press [PREFIX-I] in Tmux to install the plugins.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to execute :PlugInstall in Vim to install the plugins.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\n\u</span><span class="s2">001b[33mRemember to generate any necessary GPG keys for Git and other applications.</span><span class="se">\u</span><span class="s2">001b[0m</span><span class="se">\n</span><span class="s2">"</span>
+
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"##################################################</span><span class="se">\n</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>Congrats! How you will never need to manually install your environment again.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The purpose of this post is two fold. First, I needed an excuse to share my micro-obsession for the past week. Second, I wanted to remind both myself and you reading that automation and virtualization is an underutilized power combo. If it doesn’t need to be on bare metal, it’s worth considering a virtural buffer. Especially with the rise fo cloud computing, having your applications be modular and movable is more critical than ever.</p>]]></content><author><name>David Jr Sim</name><email>dsim@cs.ucsb.edu</email></author><summary type="html"><![CDATA[I spin up and shut down servers constantly, whether it’s for testing, for fun, or for necessity, I find myself with a dilemma. Either I can invest the time in migrating over my preferred environment to save time down the road, or I can take the efficiency loss and work with a minimal and inconvenient terminal. I want to choose neither. Thus, like all good programmers, I spent way too long automating the process of porting my setup.]]></summary></entry><entry><title type="html">Computer Science-r vs Programmer</title><link href="https://www.printhello.world/blog/2025-01-17-computer-sciencer-vs-programmer/" rel="alternate" type="text/html" title="Computer Science-r vs Programmer" /><published>2025-01-17T00:00:00+00:00</published><updated>2025-04-10T22:48:13+00:00</updated><id>https://www.printhello.world/blog/computer-sciencer-vs-programmer</id><content type="html" xml:base="https://www.printhello.world/blog/2025-01-17-computer-sciencer-vs-programmer/"><![CDATA[<p>A rant to be added soon…</p>]]></content><author><name>David Jr Sim</name><email>dsim@cs.ucsb.edu</email></author><summary type="html"><![CDATA[A rant to be added soon…]]></summary></entry><entry><title type="html">Collaborative Development Style</title><link href="https://www.printhello.world/blog/2023-09-30-development-style/" rel="alternate" type="text/html" title="Collaborative Development Style" /><published>2023-09-30T00:00:00+00:00</published><updated>2025-04-10T08:08:23+00:00</updated><id>https://www.printhello.world/blog/development-style</id><content type="html" xml:base="https://www.printhello.world/blog/2023-09-30-development-style/"><![CDATA[<p>No man walks alone. Nowhere is that truer than for a developer. From the most prominent organizations to the smallest startups, standardization is a key tool in ensuring code quality and maintainability. Even if you’re a solo developer, the future you will still have to deal with the choice present you make. Every developer has experienced a time where they had to unravel their past coding choices when revisiting old codebases and projects. Code style, code smells, and development styles measurably increase bug-catch rates and help with workflow <a href="#1">[1]</a>. This truth translates to the environment surrounding your code base.</p>
+
+<ol id="markdown-toc">
+  <li><a href="#why-be-in-style" id="markdown-toc-why-be-in-style">Why be in Style?</a></li>
+  <li><a href="#each-teams-fashion-sense" id="markdown-toc-each-teams-fashion-sense">Each Team’s Fashion Sense</a></li>
+  <li><a href="#commiting-to-the-style" id="markdown-toc-commiting-to-the-style">Commiting to the Style</a>    <ol>
+      <li><a href="#overall-format" id="markdown-toc-overall-format">Overall Format</a>        <ol>
+          <li><a href="#type" id="markdown-toc-type">Type</a></li>
+          <li><a href="#scope" id="markdown-toc-scope">Scope</a></li>
+          <li><a href="#exclamation" id="markdown-toc-exclamation">Exclamation</a></li>
+          <li><a href="#commit-message-description" id="markdown-toc-commit-message-description">Commit Message Description</a></li>
+          <li><a href="#body-and-footer" id="markdown-toc-body-and-footer">Body and Footer</a></li>
+          <li><a href="#owner" id="markdown-toc-owner">Owner</a></li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#coding-in-style" id="markdown-toc-coding-in-style">Coding in Style</a>    <ol>
+      <li><a href="#lcc-lower-camel-case-supremacy" id="markdown-toc-lcc-lower-camel-case-supremacy">LCC (Lower Camel Case) Supremacy</a></li>
+      <li><a href="#bracket-brakes" id="markdown-toc-bracket-brakes">Bracket Brakes</a></li>
+      <li><a href="#unused-imports-need-to-go" id="markdown-toc-unused-imports-need-to-go">Unused Imports Need to Go</a></li>
+    </ol>
+  </li>
+  <li><a href="#fashionable-issues" id="markdown-toc-fashionable-issues">Fashionable Issues</a>    <ol>
+      <li><a href="#small-issues" id="markdown-toc-small-issues">Small Issues</a></li>
+      <li><a href="#large-issues" id="markdown-toc-large-issues">Large Issues</a></li>
+      <li><a href="#issue-template-explanation" id="markdown-toc-issue-template-explanation">Issue Template Explanation</a>        <ol>
+          <li><a href="#issue-title" id="markdown-toc-issue-title">Issue Title</a></li>
+          <li><a href="#issue-title-description" id="markdown-toc-issue-title-description">Issue Title Description</a></li>
+          <li><a href="#replication" id="markdown-toc-replication">Replication</a></li>
+          <li><a href="#other-information" id="markdown-toc-other-information">Other Information*</a></li>
+        </ol>
+      </li>
+      <li><a href="#issue-template" id="markdown-toc-issue-template">Issue Template</a></li>
+    </ol>
+  </li>
+  <li><a href="#perfect-pull-requests" id="markdown-toc-perfect-pull-requests">Perfect Pull Requests</a>    <ol>
+      <li><a href="#pull-request-template-explanation" id="markdown-toc-pull-request-template-explanation">Pull Request Template Explanation</a>        <ol>
+          <li><a href="#pull-request-title" id="markdown-toc-pull-request-title">Pull Request Title</a></li>
+          <li><a href="#overview" id="markdown-toc-overview">Overview</a></li>
+          <li><a href="#screenshots-optional" id="markdown-toc-screenshots-optional">Screenshots (Optional)</a></li>
+          <li><a href="#feedback-request-optional" id="markdown-toc-feedback-request-optional">Feedback Request (Optional)</a></li>
+          <li><a href="#future-possibilities-optional" id="markdown-toc-future-possibilities-optional">Future Possibilities (Optional)</a></li>
+          <li><a href="#validation-optional" id="markdown-toc-validation-optional">Validation (Optional)</a></li>
+          <li><a href="#tests" id="markdown-toc-tests">Tests</a></li>
+          <li><a href="#linked-issues" id="markdown-toc-linked-issues">Linked Issues</a></li>
+        </ol>
+      </li>
+      <li><a href="#pull-request-template" id="markdown-toc-pull-request-template">Pull Request Template</a></li>
+    </ol>
+  </li>
+  <li><a href="#code-reviews" id="markdown-toc-code-reviews">Code Reviews</a>    <ol>
+      <li><a href="#responding-to-a-code-review" id="markdown-toc-responding-to-a-code-review">Responding to a Code Review</a></li>
+      <li><a href="#code-review-checklist" id="markdown-toc-code-review-checklist">Code Review Checklist</a></li>
+    </ol>
+  </li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+  <li><a href="#references" id="markdown-toc-references">References</a></li>
+</ol>
+
+<h2 id="why-be-in-style">Why be in Style?</h2>
+
+<p>Even if you are a solo developer, having a consistent style to easily search, understand, and reference what is happening is critical as you build your portfolio. Understanding someone else’s codebase (or simply relearning your old one) is hard enough; don’t add to the confusion by making commit messages inconsistent, pipelines untracable, or documentation hard to find. A logical and well-defined workflow will make you and your team more productive.</p>
+
+<h2 id="each-teams-fashion-sense">Each Team’s Fashion Sense</h2>
+
+<p>There are too many styles, practices, guidelines, and philosophies to list and present. If I were to try to include them all to explain, this would be under <strong><a href="/research/">Research</a></strong>, or I would tell you to go read <a href="https://www.agilealliance.org/agile101/">Agile</a>. Instead, I want to present a starting point for your team’s exploration, research, and evolution. I will explain my rationale for each choice and how it has helped my team in our development. This style is based around <a href="https://git-scm.com/">Git</a> and <a href="https://github.com/">GitHub</a> but can be adapted to any version control system or ecosystem.</p>
+
+<p>If you’ve never tried to follow a style, I encourage you to start here. I find it flexible enough to introduce you to some concepts while not limiting you to a rigid set of rules.</p>
+
+<h2 id="commiting-to-the-style">Commiting to the Style</h2>
+
+<p>We will start with the most basic item: commit messages. It goes without saying that all commits should be small and incremental. Hopefully, they are atomic enough for the codebase to utilize the true power of Git. Yet, when it is time to go and commit, you need to explain to someone what you changed without them having to look at the code. In this style, we use <a href="https://www.conventionalcommits.org/">Conventional Commits (CC)</a> as the foundation for our commit messages. Its website has a great <em>FAQ</em> about why you should use it. TLDR: It helps with automation, documentation, and understanding. For someone with no previous preferences in their messages, this ensures a versatile beginning to be adapted wherever your journey takes you. While the specification isn’t too long, I will summarize the important parts here.</p>
+
+<h3 id="overall-format">Overall Format</h3>
+
+<p>The overall format of a commit message is:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;<span class="nb">type</span><span class="o">&gt;[</span>optional <span class="o">(</span>scope<span class="o">)][</span>optional <span class="o">!]</span>: &lt;description&gt;
+
+<span class="o">[</span>optional body]
+
+<span class="o">[</span>optional footer<span class="o">(</span>s<span class="o">)]</span>
+</code></pre></div></div>
+
+<p>Let’s go through each part one by one.</p>
+
+<h4 id="type">Type</h4>
+
+<p>This is the “category” of your change. It really can be any set that your team agrees on. However, as per <em>CC</em>, the two most common ones are <code class="language-plaintext highlighter-rouge">feat</code> (adding new code) and <code class="language-plaintext highlighter-rouge">fix</code> (fixing old code).</p>
+
+<p>Some more common types that are defined are:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">docs</code>: Changes in documentation or comments</li>
+  <li><code class="language-plaintext highlighter-rouge">style</code>: Everything related to styling (of code and not application)</li>
+  <li><code class="language-plaintext highlighter-rouge">refactor</code>: Changes that neither fix a bug nor add a feature</li>
+  <li><code class="language-plaintext highlighter-rouge">test</code>: Everything related to testing (i.e., when creating a test suite and not modifying a file to pass tests)</li>
+  <li><code class="language-plaintext highlighter-rouge">chore</code>: Everything related to maintaining the code (e.g., updating build tasks, package manager configs, etc)</li>
+</ul>
+
+<h4 id="scope">Scope</h4>
+
+<p>This is an <em>optional</em> field that can be useful when your codebase is large. It defines the area of impact for your change. For example, if you are working on a full-stack application, you might have <code class="language-plaintext highlighter-rouge">client</code>, <code class="language-plaintext highlighter-rouge">server</code>, <code class="language-plaintext highlighter-rouge">database</code>, etc. You can also make it more granular. Say your app has multiple microservices, you could have <code class="language-plaintext highlighter-rouge">auth</code>, <code class="language-plaintext highlighter-rouge">payment</code>, <code class="language-plaintext highlighter-rouge">notification</code>, etc. Just remember that the scope will be in parentheses, i.e., <code class="language-plaintext highlighter-rouge">(auth)</code>.</p>
+
+<h4 id="exclamation">Exclamation</h4>
+
+<p>This is an <em>optional</em> character that helps denote a breaking change. It is most commonly used when moving from version 1 to version 2 or when an external dependency changes.</p>
+
+<h4 id="commit-message-description">Commit Message Description</h4>
+
+<p>This is the “title” of your commit. It should inform the reader broadly of what you’ve changed. As a general rule, it should be less than 25 words; any more than that, and it should be in the body.</p>
+
+<p>Do not end it with a punctuation mark, as it is not a sentence. Plus, it’s an extra character that will forever be in your history. Over time, they add up.</p>
+
+<p>Start your title with an imperative tense word (e.g., <code class="language-plaintext highlighter-rouge">add</code> and not <code class="language-plaintext highlighter-rouge">added</code> or <code class="language-plaintext highlighter-rouge">adds</code>). This makes it neutral and easier to understand. In addition, capitalize only the first word to denote the start of the description sentence (e.g., <code class="language-plaintext highlighter-rouge">feat:Compute ray render</code>). This wording style may seem picky at first, but when someone is reading through hundreds of commit histories, it makes the process easier to scan and digest.</p>
+
+<p>Some may find it helpful to think of the description as completing the sentence: <em>“After this commit, the application will…”</em>. Contrast that with <em>“In this commit, I will…”</em>. At the end of the day, you are simply the medium through which the code is changed. Your actions and process are not important; the code is. You will not perform the application functions; the code will, so make the message about the code (e.g., not <code class="language-plaintext highlighter-rouge">feat:Add database handler</code> but <code class="language-plaintext highlighter-rouge">feat:Openfacing database api</code>).</p>
+
+<h4 id="body-and-footer">Body and Footer</h4>
+
+<p>These are both <em>optional</em> fields. I slightly discourage using these fields as we have integrated better ways of expressing these fields through <em>Github</em>. However, if your team is on a pure <em>Git</em> workflow, I recommend reading more about them on <em>CC</em>’s website.</p>
+
+<h4 id="owner">Owner</h4>
+
+<p>In today’s day and age, computer security is more important than ever<a href="#2">[2]</a><a href="#3">[3]</a>. As such, each person should have all their commits signed with their <a href="https://gnupg.org/">GPG key</a>. That isn’t to say that these referenced CVE cases could’ve been solved by this. Rather, <em>GPG</em> is another layer of security to lock down any potential leaks in your codebase. Plus, it just looks cool. Thus, you should utilize the tools Github offers you and <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification">add your GPG key</a>.</p>
+
+<p>For those environments where code change attribution is necessary, add the initials of programmers at the end of the description to give credit to the authors when group programming (e.g., <code class="language-plaintext highlighter-rouge">feat:describe a description-(ds/jz/pm)</code>). Note the hyphen, lack of spaces, and parentheses between the description and initials. If group members’ initials are the same, utilize the hierarchy below until there is no ambiguity (e.g., <code class="language-plaintext highlighter-rouge">(dos/jz/pm/dss)</code>):</p>
+<ol>
+  <li>Middle name initial</li>
+  <li>Middle name letters</li>
+  <li>Last name letters</li>
+  <li>First name letters</li>
+</ol>
+
+<h2 id="coding-in-style">Coding in Style</h2>
+
+<p>Okay, I know this post is about everything around the code, but I would be remiss if I didn’t mention a few overarching items that apply broadly. Don’t forget, there are too many code linters, formatters, plugins, and tools to help you with this section. However, here are some basics that I believe in.</p>
+
+<h3 id="lcc-lower-camel-case-supremacy">LCC (Lower Camel Case) Supremacy</h3>
+
+<p>In line with the “punctuations add unnecessary characters” theme, I believe underscores do the same. One can easily read a variable name through LCC, and it saves on character count and finger strokes. Is there a place for underscores? Maybe, but it is definitely not in your variable names.</p>
+
+<h3 id="bracket-brakes">Bracket Brakes</h3>
+
+<p>The first bracket should be on the same line. I don’t know why you would have a bracket on its own line. That’s not how to extend your lines-of-code-written stat. It takes up a useless line and, in my personal opinion, looks a little dumb and incomplete.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// file: `correct.cpp`</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">streetLength</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">walkTheDog</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// file: `bad.cpp`</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sillyModeMax</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> 
+<span class="p">{</span>
+  <span class="n">beBad</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="unused-imports-need-to-go">Unused Imports Need to Go</h3>
+
+<p>While I may be a hoarder in real life, there’s no need to hoard your dependencies in your codebase. It will still be there the next time you need to use it. Unused imports bloat your code, make it harder to understand, and create gaps for security vulnerabilities. REMOVE. UNUSED. IMPORTS. Better yet, minimize your imports. You don’t need the <a href="https://github.com/jezen/is-thirteen"><code class="language-plaintext highlighter-rouge">is-thirteen</code></a> library.</p>
+
+<h2 id="fashionable-issues">Fashionable Issues</h2>
+
+<p>Issues are the main reason why we collaborate on code. If we all wrote perfect code, who would want to deal with another person? As such, issues need to be documented and transferable between members. Here, we define two categories of issues: <strong>small</strong> and <strong>large</strong>.</p>
+
+<p class="note" title="Note">Both categories incorporate all types of issues (i.e., bugs, vulnerabilities, etc.).</p>
+
+<h3 id="small-issues">Small Issues</h3>
+
+<p>These small issues can be solved within 10 minutes and can be described within 100 words.</p>
+
+<p class="note" title="Be Careful!">Both of these conditions must be met for it to be considered a small issue. If it can be described in less than 100 words but cannot be fixed within 10 minutes, then it is not a small issue. Likewise, if it can be fixed within 10 minutes but is so nuanced that 100 words cannot tell the whole story, then it is not a small issue.</p>
+
+<p>Such small issues should be relayed across team members through non-codebase channels (e.g., Slack, Discord, etc.). This will prevent clustering of issues, say on Github, and preserve such places for more critical, team-wide considerations. That is not to say that these small issues are any less important. Never should an issue in an existing codebase be fixed by a single person. You never know when and where it will be called, and if your fix breaks compatibility, it will be a nightmare domino effect.</p>
+
+<h3 id="large-issues">Large Issues</h3>
+
+<p>These issues encompass anything that small issues cannot. More literally, if you need to write documentation on the issue, or even <em>issue</em> a press release, then it is a large issue. These issues should be documented on <em>Github</em> through the Issues tab and need to be more thoroughly described. This way, the entire team can work on the issue and be on the same page. Below is a very minimal but adaptable template. Because there are an infinite number of ways an issue can arise, I have chosen to include only the bones. Feel free to adapt and modify this template for your codebase.</p>
+
+<h3 id="issue-template-explanation">Issue Template Explanation</h3>
+
+<h4 id="issue-title">Issue Title</h4>
+
+<p>This is the summary of the issue. It should be descriptive but no more than 10 words. Think of this like the <a href="#commit-message-description">description in a commit message</a>.</p>
+
+<h4 id="issue-title-description">Issue Title Description</h4>
+
+<p>This is the actual details of the issue. It should include all relevant details of the issue and why it is not working as expected. Some people also include <code class="language-plaintext highlighter-rouge">expected behavior</code> and <code class="language-plaintext highlighter-rouge">actual behavior</code> subsections. If you get a colleague to read nothing else but this section, and they have no idea what the issue is, then you did it wrong. While detailed, it should also be brief, no more than three paragraphs. Any more than this, and you have multiple issues on your hands.</p>
+
+<h4 id="replication">Replication</h4>
+
+<p>This is where you document how to reproduce the issue. Think of this almost as a copy-and-paste installation section on <em>Github</em>. I should be able to run everything you’ve described here without thinking and reproduce the problem.</p>
+
+<h4 id="other-information">Other Information*</h4>
+
+<p>This is where you include everything else related to the issue. It has an asterisk because it is the most adaptable part of this template. Add subsections, links, and anything else you deem fit. I personally would include platform and system versions, screenshots, and maybe even videos.</p>
+
+<h3 id="issue-template">Issue Template</h3>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--file: `.github/ISSUE_TEMPLATE/basic.md`--&gt;</span>
+<span class="gu">## Description</span>
+<span class="c">&lt;!--A paragraph explaining the issue.--&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+<span class="gu">## Replication</span>
+<span class="c">&lt;!--What steps are needed to reproduce this issue?--&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+<span class="gu">## Other Information</span>
+<span class="c">&lt;!--Any other related information that someone trying to debug this issue needs to know.--&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+</code></pre></div></div>
+
+<h2 id="perfect-pull-requests">Perfect Pull Requests</h2>
+
+<p>Pull requests are the backbone of <em>Git</em> collaboration. It is how code is accepted into the application, it is how work is measured, it is how progress is completed. There really aren’t (or shouldn’t be) that many types of pull request varieties. With it being so universal across all projects, this template is a little more thorough compared to issues. Regardless, feel free to adapt it to your needs.</p>
+
+<h3 id="pull-request-template-explanation">Pull Request Template Explanation</h3>
+
+<h4 id="pull-request-title">Pull Request Title</h4>
+
+<p>Again, this is like the <a href="#commit-message-description">description of a commit message</a>, with 10 words or less. Can someone familiar with the project understand precisely what is being added?</p>
+
+<h4 id="overview">Overview</h4>
+
+<p>This should summarize all the commits in the pull request and should also follow the 3-paragraph rule. Not only does this limit encourage brevity, but it also helps as a sanity check that the one pull request is not trying to add too much to the codebase. You shouldn’t be doubling the codebase in one pull request. You should also go into more detail about the specific changes made in the pull request so that someone familiar with the project can understand all the changes exactly. It should include details from the programmer, admin, and user perspectives. If there is a working instance (e.g., a dev branch or a demo), link it here as well.</p>
+
+<h4 id="screenshots-optional">Screenshots (Optional)</h4>
+
+<p>If the change has a visual component, include a screenshot. This allows for reviewer to quickly glance at the proposed addition without the need to spin up their own instance. If needed, flex those markdown skills and add captions to the images for clarity. I will also add that if you are committing frontend visual changes, then you should treat this section as non-optional.</p>
+
+<h4 id="feedback-request-optional">Feedback Request (Optional)</h4>
+
+<p>If the pull request is a work in progress or if there are code sections that a reviewer should pay attention to, mention it here. Don’t be shy and egotistic; ask for help if you need it. If there is a specific person who should pay attention, add them here to get their attention. You should be specific about the types of feedback you are looking for and not just general feedback. (e.g., “<em>I am looking for feedback on the new API calls and if we need more granular control</em>” or “<em>Dave, please help me review my implementation of the matching algorithm and its speed</em>”). You should be competent enough not to require a classroom-level review.</p>
+
+<h4 id="future-possibilities-optional">Future Possibilities (Optional)</h4>
+
+<p>This section is a somewhat pathos section of approving this merge. Talk about the big picture or reiterate the necessity of this change to remind people of its big-picture purpose. Be as comprehensible as required, but do not put your grandeur dreams first. This is not a place to pitch your next big idea.</p>
+
+<h4 id="validation-optional">Validation (Optional)</h4>
+
+<p>If there isn’t a demo instance, what steps are necessary to reproduce your feature to check that it works? Start by checking out your branch and then interacting with the app. It doesn’t have to be complicated, but like the <a href="#replication">replication section of the issues template</a>, it should be easy to follow mindlessly. If nothing else, treat this section as if you were talking with your end user.</p>
+
+<h4 id="tests">Tests</h4>
+
+<p>This is a checklist-style of all the standard tests your pull request has passed. They should not include any CD/CI tests that will run (e.g., github workflows). Instead, they should be manual tests that must be passed before the pull request can be merged. This suite of tests should be standardized by the team. If there are additional one-off tests, make sure they are clearly marked. If there are any failed tests, call them out and, if necessary, explain why they are necessarily failing.</p>
+
+<h4 id="linked-issues">Linked Issues</h4>
+
+<p>Most, if not all, pull requests should be linked to an issue. This is a feature of <em>Github</em>, but regardless, the issue prompting this pull request should be referenced somewhere. This is a great way to keep track of progress and automatically remove completed issues during CD/CI. That said, try to limit each pull request to one issue. This ensures your request is not too large and heavy on the codebase. If you need to link multiple issues, link one issue per line for readability. On <em>Github</em>, you can link an issue by using any of the following magic words plus <code class="language-plaintext highlighter-rouge">#issueNo</code>:</p>
+
+<ul>
+  <li>close</li>
+  <li>closes</li>
+  <li>closed</li>
+  <li>fix</li>
+  <li>fixes</li>
+  <li>fixed</li>
+  <li>resolve</li>
+  <li>resolves</li>
+  <li>resolved</li>
+</ul>
+
+<h3 id="pull-request-template">Pull Request Template</h3>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--file: `.github/PULL_REQUEST_TEMPLATE/basic.md`--&gt;</span>
+<span class="gu">## Overview</span>
+<span class="c">&lt;!--A paragraph of the PR and related content--&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+<span class="gu">## Screenshots (Optional)</span>
+<span class="c">&lt;!--Necessary screenshots and any necessary captions here. Delete if not needed.--&gt;</span>
+<span class="p">![</span><span class="nv">Generic placeholder image</span><span class="p">](</span><span class="sx">https://picsum.photos/640/480</span><span class="p">)</span>
+
+<span class="gu">## Feedback Request (Optional)</span>
+<span class="c">&lt;!--Anywhere specific you want reviewers to take a look at and give suggestions. Delete if not needed.--&gt;</span>
+None needed. I am the best.
+
+<span class="gu">## Future Possibilities (Optional)</span>
+<span class="c">&lt;!--What do you think this project could become? Delete if not needed.--&gt;</span>
+This will go to the moon if we invest all our life savings into this concept!!!
+
+<span class="gu">## Validation (Optional)</span>
+<span class="c">&lt;!--Steps that someone else could take to make sure everything is working--&gt;</span>
+Just trust me, bro. :)
+
+<span class="gu">## Tests</span>
+<span class="c">&lt;!--Add any additional tests or required tests--&gt;</span>
+<span class="p">-</span> [ ] Unit tests pass
+<span class="p">-</span> [ ] Test coverage is at 100%
+<span class="p">-</span> [ ] Mutation tests show a rate of 100% 
+
+<span class="gu">## Linked Issues</span>
+<span class="c">&lt;!--Issues related to the PR--&gt;</span>
+Closes #0
+</code></pre></div></div>
+
+<h2 id="code-reviews">Code Reviews</h2>
+
+<p>A simple <em>“LGTM!”</em> is <strong>NOT A CODE REVIEW</strong>! It is a sign of laziness and, in my experience, one of the leading ways issues get leaked to production. Instead, the reviewer should pay attention to the code changes and not rely automatically on the CD/CI environment.</p>
+
+<p>Below is a checklist to help guide you with some starting questions to consider when doing a code review. It is not an exhaustive list, but it should be mostly included in any review.</p>
+
+<p>Write any issues or suggestions that you may have to the requestor and have those issues changed before approving. Remember to be constructive and respectful with your review. They took the time to code everything, after all. We are all learning, so have open discussions about your suggestions and provide guidance if necessary. Make sure your suggestions and criteria are straightforward for the requestor to go and fix. Your code review is not done until you approve of the PR, so respond to any changes and updates within a reasonable time frame!</p>
+
+<h3 id="responding-to-a-code-review">Responding to a Code Review</h3>
+
+<p>Be positive and open a discussion. You do not have to implement or agree with other people’s decisions. Respond from a point of gratitude- they took the time to look over your code, after all. If you agree, write something to acknowledge their feedback(e.g., “good call, fixed” or “thanks for catching that, fixed”). If you don’t, open a discussion with them and see how to resolve the issue; don’t just dismiss the comment (e.g., “Hmm, I see it differently; let’s discuss” or “I’m not sure I understand your perspective; can you explain further?” or “I see where you are coming from, but i/we think it should be like this…”).</p>
+
+<h3 id="code-review-checklist">Code Review Checklist</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Is the PR conforming to the standards described within this document?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Are there relevant sections (e.g., screenshots for frontend, test coverage,e and mutation for all)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Is the purpose of the PR well explained, not just the what, but also the why?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />If there is a linked issue, is the assigned issue coder in the loop with this PR (i.e., the PR requestor or approves the PR)?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Does the PR pass all of the CI/CD tests?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />When applicable, is there a deployed dev instance to test, and does it work?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />If the issue(s) this PR addresses have acceptance criteria, are all of those met? And if so, are they checked off?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Commented out code; typically, this should be removed before merging into the default branch.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Quickly look at the file changes and see if any stand out and should be removed (e.g., .DS_Store from Mac users or *~ from emacs users or package.json and package-lock.json at the top level of the repo (they should only be in the frontend directory)</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That wasn’t so bad, was it? The simplified documentation on our discussion can be found <a href="https://gist.github.com/dscpsyl/8b9ae7454ed38e81db67715479dce5e8">here</a>. Now, go on and explore, adapt, and break all the rules you deem fit. Just remember to document your changes.</p>
+
+<h2 id="references">References</h2>
+<p><a id="1">[1]</a>
+A. Cairo, G. Carneiro, and M. Monteiro, “The Impact of Code Smells on Software Bugs: A Systematic Literature Review,” Information, vol. 9, no. 11, p. 273, Nov. 2018, doi: https://doi.org/10.3390/info9110273.</p>
+
+<p><a id="1">[2]</a>
+CVE-2021-44228 (Log4j2). https://nvd.nist.gov/vuln/detail/cve-2021-44228</p>
+
+<p><a id="1">[3]</a>
+CVE-2024-3094 (xz). https://nvd.nist.gov/vuln/detail/cve-2024-3094</p>]]></content><author><name>David Jr Sim</name><email>dsim@cs.ucsb.edu</email></author><summary type="html"><![CDATA[No man walks alone. Nowhere is that truer than for a developer. From the most prominent organizations to the smallest startups, standardization is a key tool in ensuring code quality and maintainability. Even if you’re a solo developer, the future you will still have to deal with the choice present you make. Every developer has experienced a time where they had to unravel their past coding choices when revisiting old codebases and projects. Code style, code smells, and development styles measurably increase bug-catch rates and help with workflow [1]. This truth translates to the environment surrounding your code base.]]></summary></entry></feed>
