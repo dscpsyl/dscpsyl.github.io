@@ -86,7 +86,7 @@ The name of the file can be whaever you want it to be, but it is recommended to 
 
 ## How to Add a Research Paper
 
-Research is added the same as *Projects*. There is a custom layout `research.html` that is added to the themepack for the main overview page. The only difference is that in the overview, they are presented as a list instead of the grid. In addition, all papers are put in the `_research` folder and `research` collection.
+Research is added as a `base` layout. It is assumed that only PDF embeds are required for presentation. Should you need more, then choose `project`. In the overview, they are presented as a list instead of the grid. In addition, all papers are put in the `_research` folder and `research` collection.
 
 ## How to Update the Resume
 
