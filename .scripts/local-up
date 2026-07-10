@@ -7,4 +7,4 @@ source ./.scripts/check-deps.sh;
 
 bundle install;
 
-jekyll serve --livereload --trace;
+bundle exec jekyll serve --livereload --trace;
