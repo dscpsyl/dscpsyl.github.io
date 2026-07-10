@@ -1,6 +1,7 @@
 # If you have a `resume.json` file, copy it into `_data` and delete this file.
 # If you don't have a JSON Resume you can just edit this YAML file instead.
 # See also: <https://jsonresume.org/>.
+#! Accurate as of 04/05/2025
 basics:
   name: "David Jr Sim"
   # label: ""

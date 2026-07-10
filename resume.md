@@ -2,7 +2,7 @@
 layout: resume
 title: Résumé*
 description: >
-  David Jr Sim's current resume.
+  David Jr Sim's resume.
 hide_description: true
 left_column:
   - work
