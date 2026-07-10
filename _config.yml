@@ -57,8 +57,8 @@ menu:
     url:               /projects/
   - title:             Research
     url:               /research/
-  - title:             Résumé
-    url:               /resume/
+  # - title:             Résumé
+  #   url:               /resume/
   #If I ever decide to add it: https://github.com/piazzai/cvless
   # - title:             CV
   #   url:               /cv/
